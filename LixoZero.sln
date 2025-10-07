@@ -5,7 +5,7 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LixoZero", "LixoZero.csproj", "{843D7A98-2C72-4124-91C1-9F53B9D8EABB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LixoZero.Tests", "LixoZero\LixoZero.Tests\LixoZero.Tests.csproj", "{79D163B6-866E-419E-B4AD-EB659DE218BE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LixoZero.Tests", "LixoZero.Tests\LixoZero.Tests.csproj", "{79D163B6-866E-419E-B4AD-EB659DE218BE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
