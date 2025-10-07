@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "8CoroooW/KI=",
+  "dgSpecHash": "3o8SmQG38cQ=",
   "success": true,
-  "projectFilePath": "C:\\Users\\Ariel\\Downloads\\LixoZero (Fase 06)\\LixoZero.Tests\\LixoZero.Tests.csproj",
+  "projectFilePath": "C:\\Users\\Ariel\\Downloads\\LixoZero\\LixoZero.Tests\\LixoZero.Tests.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Ariel\\.nuget\\packages\\coverlet.collector\\6.0.4\\coverlet.collector.6.0.4.nupkg.sha512",
     "C:\\Users\\Ariel\\.nuget\\packages\\microsoft.codecoverage\\17.14.1\\microsoft.codecoverage.17.14.1.nupkg.sha512",
