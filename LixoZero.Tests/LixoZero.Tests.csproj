@@ -27,8 +27,8 @@
     <Using Include="Xunit" />
   </ItemGroup>
 
-  <ItemGroup>
-<ProjectReference Include="..\LixoZero\LixoZero.csproj" />
-  </ItemGroup>
+<ItemGroup>
+  <ProjectReference Include="../LixoZero.csproj" />
+</ItemGroup>
 
 </Project>
