@@ -1,0 +1,9 @@
+# Build e cache (.NET/VS)
+**/bin/
+**/obj/
+.vs/
+**/.vs/
+*.csproj.user
+
+# Bancos locais / artefatos
+*.db
