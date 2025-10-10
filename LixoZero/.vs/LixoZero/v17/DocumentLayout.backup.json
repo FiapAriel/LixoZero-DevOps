@@ -1,0 +1,121 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Ariel\\Downloads\\Projeto .Net\\LixoZero\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{6457930C-2B57-48FE-BE69-9C40D99ACD8E}|LixoZero.csproj|c:\\users\\ariel\\downloads\\projeto .net\\lixozero\\lixozero.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{6457930C-2B57-48FE-BE69-9C40D99ACD8E}|LixoZero.csproj|solutionrelative:lixozero.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6457930C-2B57-48FE-BE69-9C40D99ACD8E}|LixoZero.csproj|c:\\users\\ariel\\downloads\\projeto .net\\lixozero\\data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6457930C-2B57-48FE-BE69-9C40D99ACD8E}|LixoZero.csproj|solutionrelative:data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6457930C-2B57-48FE-BE69-9C40D99ACD8E}|LixoZero.csproj|c:\\users\\ariel\\downloads\\projeto .net\\lixozero\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6457930C-2B57-48FE-BE69-9C40D99ACD8E}|LixoZero.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6457930C-2B57-48FE-BE69-9C40D99ACD8E}|LixoZero.csproj|c:\\users\\ariel\\downloads\\projeto .net\\lixozero\\controllers\\descartescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6457930C-2B57-48FE-BE69-9C40D99ACD8E}|LixoZero.csproj|solutionrelative:controllers\\descartescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6457930C-2B57-48FE-BE69-9C40D99ACD8E}|LixoZero.csproj|c:\\users\\ariel\\downloads\\projeto .net\\lixozero\\models\\descarte.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6457930C-2B57-48FE-BE69-9C40D99ACD8E}|LixoZero.csproj|solutionrelative:models\\descarte.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6457930C-2B57-48FE-BE69-9C40D99ACD8E}|LixoZero.csproj|c:\\users\\ariel\\downloads\\projeto .net\\lixozero\\data\\appdbcontextfactory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6457930C-2B57-48FE-BE69-9C40D99ACD8E}|LixoZero.csproj|solutionrelative:data\\appdbcontextfactory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 3,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:1:0:{d212f56b-c48a-434c-a121-1c5d80b59b9f}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\Ariel\\Downloads\\Projeto .Net\\LixoZero\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "C:\\Users\\Ariel\\Downloads\\Projeto .Net\\LixoZero\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-15T04:04:19.038Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "AppDbContextFactory.cs",
+              "DocumentMoniker": "C:\\Users\\Ariel\\Downloads\\Projeto .Net\\LixoZero\\Data\\AppDbContextFactory.cs",
+              "RelativeDocumentMoniker": "Data\\AppDbContextFactory.cs",
+              "ToolTip": "C:\\Users\\Ariel\\Downloads\\Projeto .Net\\LixoZero\\Data\\AppDbContextFactory.cs",
+              "RelativeToolTip": "Data\\AppDbContextFactory.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAswBAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-15T04:24:20.608Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "LixoZero.csproj",
+              "DocumentMoniker": "C:\\Users\\Ariel\\Downloads\\Projeto .Net\\LixoZero\\LixoZero.csproj",
+              "RelativeDocumentMoniker": "LixoZero.csproj",
+              "ToolTip": "C:\\Users\\Ariel\\Downloads\\Projeto .Net\\LixoZero\\LixoZero.csproj",
+              "RelativeToolTip": "LixoZero.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAApAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-06-15T04:07:51.928Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "AppDbContext.cs",
+              "DocumentMoniker": "C:\\Users\\Ariel\\Downloads\\Projeto .Net\\LixoZero\\Data\\AppDbContext.cs",
+              "RelativeDocumentMoniker": "Data\\AppDbContext.cs",
+              "ToolTip": "C:\\Users\\Ariel\\Downloads\\Projeto .Net\\LixoZero\\Data\\AppDbContext.cs",
+              "RelativeToolTip": "Data\\AppDbContext.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-15T04:03:41.278Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "DescartesController.cs",
+              "DocumentMoniker": "C:\\Users\\Ariel\\Downloads\\Projeto .Net\\LixoZero\\Controllers\\DescartesController.cs",
+              "RelativeDocumentMoniker": "Controllers\\DescartesController.cs",
+              "ToolTip": "C:\\Users\\Ariel\\Downloads\\Projeto .Net\\LixoZero\\Controllers\\DescartesController.cs",
+              "RelativeToolTip": "Controllers\\DescartesController.cs",
+              "ViewState": "AgIAABsAAAAAAAAAAAAuwCwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-15T04:38:43.572Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Descarte.cs",
+              "DocumentMoniker": "C:\\Users\\Ariel\\Downloads\\Projeto .Net\\LixoZero\\Models\\Descarte.cs",
+              "RelativeDocumentMoniker": "Models\\Descarte.cs",
+              "ToolTip": "C:\\Users\\Ariel\\Downloads\\Projeto .Net\\LixoZero\\Models\\Descarte.cs",
+              "RelativeToolTip": "Models\\Descarte.cs",
+              "ViewState": "AgIAAAgAAAAAAAAAAAAAwBsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-15T04:01:56.991Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

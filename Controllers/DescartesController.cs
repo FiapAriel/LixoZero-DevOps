@@ -16,35 +16,38 @@ namespace LixoZero.Controllers
             _service = service;
         }
 
-        /// <summary>
-        /// Lista todos os descartes com paginação
-        /// </summary>
+        /// <summary>Lista todos os descartes com paginação</summary>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<PagedResult<DescarteDto>>> GetDescartes([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+        public async Task<ActionResult<PagedResult<DescarteDto>>> GetDescartes(
+            [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
             var descartes = await _service.GetDescartesAsync(page, pageSize);
             return Ok(descartes);
         }
 
-        /// <summary>
-        /// Busca um descarte pelo ID
-        /// </summary>
-        [HttpGet("{id}")]
+        /// <summary>Busca um descarte pelo ID</summary>
+        [HttpGet("{id:int}", Name = nameof(GetDescarteById))]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<DescarteDto>> GetDescarteById(int id)
+        public async Task<ActionResult<DescarteDto>> GetDescarteById([FromRoute] int id)
         {
             var descarte = await _service.GetByIdAsync(id);
-            if (descarte == null)
+            if (descarte is null)
                 return NotFound();
 
-            return Ok(descarte);
+            var dto = new DescarteDto
+            {
+                Bairro = descarte.Bairro,
+                Tipo = descarte.Tipo,
+                QuantidadeKg = descarte.QuantidadeKg,
+                DataHora = descarte.DataHora
+            };
+
+            return Ok(dto);
         }
 
-        /// <summary>
-        /// Cria um novo descarte
-        /// </summary>
+        /// <summary>Cria um novo descarte</summary>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -54,16 +57,23 @@ namespace LixoZero.Controllers
                 return BadRequest(ModelState);
 
             var criado = await _service.CreateAsync(dto);
-            return CreatedAtAction(nameof(GetDescarteById), new { id = criado.Id }, criado);
+
+            var result = new DescarteDto
+            {
+                Bairro = criado.Bairro,
+                Tipo = criado.Tipo,
+                QuantidadeKg = criado.QuantidadeKg,
+                DataHora = criado.DataHora
+            };
+
+            return CreatedAtAction(nameof(GetDescarteById), new { id = criado.Id }, result);
         }
 
-        /// <summary>
-        /// Exclui um descarte pelo ID
-        /// </summary>
-        [HttpDelete("{id}")]
+        /// <summary>Exclui um descarte pelo ID</summary>
+        [HttpDelete("{id:int}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> DeleteDescarte(int id)
+        public async Task<IActionResult> DeleteDescarte([FromRoute] int id)
         {
             var sucesso = await _service.DeleteAsync(id);
             if (!sucesso)
