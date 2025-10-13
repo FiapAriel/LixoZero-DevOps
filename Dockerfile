@@ -33,5 +33,8 @@ RUN dotnet publish "./LixoZero.csproj" -c $BUILD_CONFIGURATION -o /app/publish /
 
 FROM base AS final
 WORKDIR /app
+
+RUN rm -rf /app/lixoZero.db /app/data /tmp/lixoZero.db && mkdir -p /app/db
+
 COPY --from=publish /app/publish ./
 ENTRYPOINT ["dotnet", "LixoZero.dll"]

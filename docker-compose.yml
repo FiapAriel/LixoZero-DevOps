@@ -11,9 +11,9 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development   # habilita Swagger dentro do container
       - ASPNETCORE_URLS=http://+:8080
-      # - DISABLE_HTTPS_REDIRECT=true   # use se https estiver redirecionando
+      # - DISABLE_HTTPS_REDIRECT=true   # lembrar de usar se https estiver redirecionando
     volumes:
-      - ./Data/lixoZero.db:/app/lixoZero.db
+          - ./Data/lixoZero.db:/app/db/lixoZero.db:rw
     networks:
       - lixo_net
     restart: unless-stopped
