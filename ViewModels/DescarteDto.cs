@@ -7,7 +7,7 @@ namespace LixoZero.ViewModels
     public class DescarteDto
     {
         [Required(ErrorMessage = "O campo Bairro é obrigatório.")]
-        public required string Bairro { get; set; }
+        public string Bairro { get; set; } = "";
 
         [Required(ErrorMessage = "O campo Tipo é obrigatório.")]
         public TipoMaterial Tipo { get; set; }

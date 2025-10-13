@@ -1,13 +1,100 @@
-# 🌱 Projeto - LixoZero
+# LixoZero – API (Desafio DevOps)
 
-## ♻️ Descrição
-O **LixoZero** é uma aplicação ASP.NET Core voltada à gestão de resíduos e incentivo à reciclagem, permitindo o cadastro e acompanhamento de descartes em pontos de coleta.
-
-Este projeto foi utilizado para aplicar práticas de **DevOps**, incluindo **CI/CD**, **containerização** e **orquestração com Docker Compose**.
+Repositório da matéria de DevOps. É uma API simples em .NET 8. Atendi o que foi pedido: Docker, Docker Compose, pipeline no GitHub Actions e prints mostrando que a API funciona.
 
 ---
 
-## 🐳 Como executar localmente com Docker
+## 1) O que é
+- API .NET 8 (Web API) para registrar "descartes".
+- Banco local "SQLite" (arquivo).
+- Documentação "Swagger" (habilitada no ambiente "Development").
+
+---
+
+## 2) Como rodar (Docker)
+Pré-requisito: Docker/Compose instalados.
 
 ```bash
-docker-compose up --build
+git clone https://github.com/FiapAriel/LixoZero-DevOps.git
+cd LixoZero-DevOps
+
+REM Sobe a API (porta 5038 no host → 8080 no container)
+docker compose up -d --build
+
+REM Swagger local (dev)
+REM http://localhost:5038/swagger
+
+REM Logs e parar
+docker compose logs -f
+docker compose down
+```
+
+---
+
+## 3) Variáveis básicas
+No container local eu uso:
+```
+ASPNETCORE_ENVIRONMENT=Development
+ASPNETCORE_URLS=http://+:8080
+```
+Em "staging/prod" a API roda como "Production", então o "Swagger" não aparece (normal).
+
+---
+
+## 4) Pipeline (resumo)
+Arquivo: ".github/workflows/ci-cd.yml"
+
+Quando tem push/PR na "main" ele:
+1. Restaura, compila e roda testes (MSTest).
+2. Gera a imagem Docker e publica no "GHCR".
+3. Faz deploy por SSH para "staging" e "produção" (usando secrets do GitHub).
+
+---
+
+## 5) Docker (rapidinho)
+- "Dockerfile": multi-stage (build → publish → runtime), porta "8080" no container.
+- "docker-compose.yml": mapeia "5038:8080" para rodar local e monta o SQLite de "Data/lixoZero.db" para "/app/db/lixoZero.db".
+
+---
+
+## 6) Evidências (prints)
+Estão na pasta "evidencias/":
+
+- "Swagger_get-lista.png" – GET lista (200).
+- "Swagger_get-id.png" – GET por id (200).
+- "Swagger_delete-204.png" – DELETE por id (204).
+- "Terminal_post-criar.png" – POST pelo PowerShell (cria e retorna o objeto).
+- "Terminal_get-id.png" – GET por id pelo PowerShell.
+- "Terminal_delete-e-get.png" – DELETE e depois GET lista confirmando a remoção.
+- "Swagger_LixoZero.png" – tela inicial do Swagger (opcional).
+
+---
+
+## 7) Estrutura do repositório (resumo)
+```
+/
+├── LixoZero.csproj
+├── tests/LixoZero.Tests.csproj    ← MSTest
+├── Dockerfile
+├── docker-compose.yml
+├── .github/workflows/ci-cd.yml
+├── .env.example
+├── evidencias/                    ← prints de execução
+└── README.md
+```
+
+---
+
+## 8) Observações
+- As migrations do SQLite rodam na subida do app.
+- Em produção a API fica sem Swagger. Para testar, use "curl", "Postman" ou "PowerShell" (como nos prints).
+- Se a porta "5038" estiver ocupada, pode alterar no "docker-compose.yml".
+
+---
+
+## 9) Checklist da atividade
+- [x] Dockerfile funcional (multi-stage)
+- [x] Docker Compose para rodar local
+- [x] Pipeline no GitHub Actions (build, teste, imagem e deploy)
+- [x] Prints reais de execução (Swagger e CLI)
+- [x] README com instruções simples
