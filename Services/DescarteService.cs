@@ -14,19 +14,23 @@ namespace LixoZero.Services
             _context = context;
         }
 
-        public async Task<PagedResult<DescarteDto>> GetDescartesAsync(int page, int pageSize)
+        public async Task<PagedResult<DescarteDtoComId>> GetDescartesAsync(int page, int pageSize)
         {
             if (page < 1) page = 1;
             if (pageSize < 1) pageSize = 10;
 
-            var query = _context.Descartes.AsNoTracking().OrderByDescending(d => d.DataHora);
+            var query = _context.Descartes
+                .AsNoTracking()
+                .OrderByDescending(d => d.DataHora);
 
             var totalItems = await query.CountAsync();
+
             var items = await query
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
-                .Select(d => new DescarteDto
+                .Select(d => new DescarteDtoComId
                 {
+                    Id = d.Id,
                     Bairro = d.Bairro,
                     Tipo = d.Tipo,
                     QuantidadeKg = d.QuantidadeKg,
@@ -34,7 +38,7 @@ namespace LixoZero.Services
                 })
                 .ToListAsync();
 
-            return new PagedResult<DescarteDto>
+            return new PagedResult<DescarteDtoComId>
             {
                 Items = items,
                 TotalItems = totalItems,
@@ -43,14 +47,25 @@ namespace LixoZero.Services
             };
         }
 
-        public async Task<Descarte?> GetByIdAsync(int id)
+        // GET por Id 
+        public async Task<DescarteDtoComId?> GetByIdAsync(int id)
         {
             return await _context.Descartes
                 .AsNoTracking()
-                .FirstOrDefaultAsync(d => d.Id == id);
+                .Where(d => d.Id == id)
+                .Select(d => new DescarteDtoComId
+                {
+                    Id = d.Id,
+                    Bairro = d.Bairro,
+                    Tipo = d.Tipo,
+                    QuantidadeKg = d.QuantidadeKg,
+                    DataHora = d.DataHora
+                })
+                .FirstOrDefaultAsync();
         }
 
-        public async Task<Descarte> CreateAsync(DescarteDto dto)
+        // CREATE 
+        public async Task<DescarteDtoComId> CreateAsync(DescarteDto dto)
         {
             if (dto.QuantidadeKg <= 0)
                 throw new ArgumentException("A quantidade deve ser maior que zero.", nameof(dto.QuantidadeKg));
@@ -66,9 +81,17 @@ namespace LixoZero.Services
             _context.Descartes.Add(entity);
             await _context.SaveChangesAsync();
 
-            return entity;
+            return new DescarteDtoComId
+            {
+                Id = entity.Id,
+                Bairro = entity.Bairro,
+                Tipo = entity.Tipo,
+                QuantidadeKg = entity.QuantidadeKg,
+                DataHora = entity.DataHora
+            };
         }
 
+        // DELETE 
         public async Task<bool> DeleteAsync(int id)
         {
             var entity = await _context.Descartes.FindAsync(id);

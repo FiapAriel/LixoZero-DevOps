@@ -18,55 +18,42 @@ namespace LixoZero.Controllers
 
         /// <summary>Lista todos os descartes com paginação</summary>
         [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<PagedResult<DescarteDto>>> GetDescartes(
+        [ProducesResponseType(typeof(PagedResult<DescarteDtoComId>), StatusCodes.Status200OK)]
+        public async Task<ActionResult<PagedResult<DescarteDtoComId>>> GetDescartes(
             [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
+         
             var descartes = await _service.GetDescartesAsync(page, pageSize);
             return Ok(descartes);
         }
 
         /// <summary>Busca um descarte pelo ID</summary>
         [HttpGet("{id:int}", Name = nameof(GetDescarteById))]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(DescarteDtoComId), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<DescarteDto>> GetDescarteById([FromRoute] int id)
+        public async Task<ActionResult<DescarteDtoComId>> GetDescarteById([FromRoute] int id)
         {
             var descarte = await _service.GetByIdAsync(id);
             if (descarte is null)
                 return NotFound();
 
-            var dto = new DescarteDto
-            {
-                Bairro = descarte.Bairro,
-                Tipo = descarte.Tipo,
-                QuantidadeKg = descarte.QuantidadeKg,
-                DataHora = descarte.DataHora
-            };
-
-            return Ok(dto);
+            // devolve o próprio DTO com Id
+            return Ok(descarte);
         }
 
         /// <summary>Cria um novo descarte</summary>
         [HttpPost]
-        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(DescarteDtoComId), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> CreateDescarte([FromBody] DescarteDto dto)
+        public async Task<ActionResult<DescarteDtoComId>> CreateDescarte([FromBody] DescarteDto dto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
             var criado = await _service.CreateAsync(dto);
 
-            var result = new DescarteDto
-            {
-                Bairro = criado.Bairro,
-                Tipo = criado.Tipo,
-                QuantidadeKg = criado.QuantidadeKg,
-                DataHora = criado.DataHora
-            };
-
-            return CreatedAtAction(nameof(GetDescarteById), new { id = criado.Id }, result);
+        
+            return CreatedAtAction(nameof(GetDescarteById), new { id = criado.Id }, criado);
         }
 
         /// <summary>Exclui um descarte pelo ID</summary>
