@@ -19,20 +19,20 @@ jobs:
           dotnet-version: '8.0.x'
 
       - name: Restaurar dependências
-        run: dotnet restore
+        run: dotnet restore LixoZero.csproj
 
       - name: Limpar diretórios temporários
         run: dotnet clean
 
       - name: Compilar o projeto
-        run: dotnet build --configuration Release --no-restore
+        run: dotnet build LixoZero.csproj --configuration Release --no-restore
 
       # Removido os testes temporariamente para evitar falha
       # - name: Executar testes
       #   run: dotnet test --no-build --verbosity normal || echo "Sem testes configurados"
 
       - name: Publicar aplicação
-        run: dotnet publish -c Release -o ./out
+        run: dotnet publish LixoZero.csproj -c Release -o ./out --no-build
 
       - name: Upload da build (artefato)
         uses: actions/upload-artifact@v4
