@@ -32,7 +32,7 @@ jobs:
 
       - name: Upload dos resultados de teste (TRX)
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: test-results
           path: "**/test-results.trx"
@@ -41,7 +41,7 @@ jobs:
         run: dotnet publish LixoZero.csproj -c Release -o ./out --no-build
 
       - name: Upload da build (artefato)
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: LixoZero-Build
           path: ./out
