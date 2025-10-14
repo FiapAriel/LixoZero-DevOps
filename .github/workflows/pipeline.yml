@@ -28,7 +28,7 @@ jobs:
         run: dotnet build LixoZero.csproj --configuration Release --no-restore
 
       - name: Executar testes
-        run: dotnet test tests/LixoZero.Tests.csproj --configuration Release --no-build --logger "trx;LogFileName=test-results.trx"
+        run: dotnet test tests/LixoZero.Tests.csproj --configuration Release --logger "trx;LogFileName=test-results.trx"
 
       - name: Upload dos resultados de teste (TRX)
         if: always()
