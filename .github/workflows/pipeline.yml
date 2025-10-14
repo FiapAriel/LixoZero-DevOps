@@ -7,43 +7,41 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build-test:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout do código
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
       - name: Instalar .NET 8
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v3
         with:
           dotnet-version: '8.0.x'
 
       - name: Restaurar dependências
-        run: dotnet restore
+        run: dotnet restore LixoZero.csproj
 
       - name: Limpar diretórios temporários
         run: dotnet clean
 
-      - name: Compilar (Release)
-        run: dotnet build --configuration Release --no-restore
+      - name: Compilar o projeto
+        run: dotnet build LixoZero.csproj --configuration Release --no-restore
 
-      # Passo que faltava — ajustando o caminho do .csproj de testes, que estava dando erro
       - name: Executar testes
         run: dotnet test tests/LixoZero.Tests.csproj --configuration Release --no-build --logger "trx;LogFileName=test-results.trx"
 
       - name: Upload dos resultados de teste (TRX)
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
           name: test-results
           path: "**/test-results.trx"
 
-      # Publicação da aplicação
       - name: Publicar aplicação
         run: dotnet publish LixoZero.csproj -c Release -o ./out --no-build
 
       - name: Upload da build (artefato)
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
           name: LixoZero-Build
           path: ./out
