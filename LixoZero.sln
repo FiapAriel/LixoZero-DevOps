@@ -9,6 +9,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{0AB3BF05
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LixoZero.Tests", "tests\LixoZero.Tests.csproj", "{B15CD85B-8699-41F6-9E97-5E55AA3F2204}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LixoZero.Specs", "LixoZero.Specs\LixoZero.Specs.csproj", "{C90F24FB-E35E-4BAB-92C6-C1B116DB1590}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,6 +45,18 @@ Global
 		{B15CD85B-8699-41F6-9E97-5E55AA3F2204}.Release|x64.Build.0 = Release|Any CPU
 		{B15CD85B-8699-41F6-9E97-5E55AA3F2204}.Release|x86.ActiveCfg = Release|Any CPU
 		{B15CD85B-8699-41F6-9E97-5E55AA3F2204}.Release|x86.Build.0 = Release|Any CPU
+		{C90F24FB-E35E-4BAB-92C6-C1B116DB1590}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C90F24FB-E35E-4BAB-92C6-C1B116DB1590}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C90F24FB-E35E-4BAB-92C6-C1B116DB1590}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C90F24FB-E35E-4BAB-92C6-C1B116DB1590}.Debug|x64.Build.0 = Debug|Any CPU
+		{C90F24FB-E35E-4BAB-92C6-C1B116DB1590}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C90F24FB-E35E-4BAB-92C6-C1B116DB1590}.Debug|x86.Build.0 = Debug|Any CPU
+		{C90F24FB-E35E-4BAB-92C6-C1B116DB1590}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C90F24FB-E35E-4BAB-92C6-C1B116DB1590}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C90F24FB-E35E-4BAB-92C6-C1B116DB1590}.Release|x64.ActiveCfg = Release|Any CPU
+		{C90F24FB-E35E-4BAB-92C6-C1B116DB1590}.Release|x64.Build.0 = Release|Any CPU
+		{C90F24FB-E35E-4BAB-92C6-C1B116DB1590}.Release|x86.ActiveCfg = Release|Any CPU
+		{C90F24FB-E35E-4BAB-92C6-C1B116DB1590}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

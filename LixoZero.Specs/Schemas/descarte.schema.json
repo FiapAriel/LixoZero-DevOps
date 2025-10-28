@@ -1,0 +1,12 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": ["bairro", "tipo", "quantidadeKg", "dataHora"],
+  "properties": {
+    "bairro": { "type": "string", "minLength": 1 },
+    "tipo": { "type": "integer", "minimum": 0 },
+    "quantidadeKg": { "type": "number", "exclusiveMinimum": 0 },
+    "dataHora": { "type": "string", "format": "date-time" }
+  },
+  "additionalProperties": true
+}
