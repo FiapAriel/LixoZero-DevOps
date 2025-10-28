@@ -1,13 +1,24 @@
-# 🌱 Projeto - LixoZero
+# LixoZero — API .NET 8 (SQLite + Docker + CI/CD)
 
-## ♻️ Descrição
-O **LixoZero** é uma aplicação ASP.NET Core voltada à gestão de resíduos e incentivo à reciclagem, permitindo o cadastro e acompanhamento de descartes em pontos de coleta.
+API REST para registro de descartes (ESG), com EF Core + SQLite, Docker Compose, testes (unit/BDD) e pipeline CI/CD no GitHub Actions com deploy em **staging** e **produção**.
 
-Este projeto foi utilizado para aplicar práticas de **DevOps**, incluindo **CI/CD**, **containerização** e **orquestração com Docker Compose**.
+## Requisitos
+- .NET 8 SDK
+- Docker e Docker Compose
+- GitHub Actions habilitado no repositório
+
+## Endpoints (principais)
+- `POST /api/Descartes`
+- `GET  /api/Descartes?pagina=1&tamanho=10`
+- `GET  /api/Descartes/{id}`
+- `DELETE /api/Descartes/{id}`
+- Swagger em: **http://localhost:5038/swagger**
 
 ---
 
-## 🐳 Como executar localmente com Docker
-
-```bash
-docker-compose up --build
+## Executar local (sem Docker)
+```powershell
+dotnet restore
+dotnet ef database update
+dotnet run
+# Swagger: http://localhost:5038/swagger

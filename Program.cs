@@ -2,32 +2,51 @@ using LixoZero.Data;
 using Microsoft.EntityFrameworkCore;
 using LixoZero.Services;
 
-
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// 1) Connection string: ENV -> appsettings -> fallback local
+var cs = Environment.GetEnvironmentVariable("ConnectionStrings__DefaultConnection")
+         ?? builder.Configuration.GetConnectionString("DefaultConnection")
+         ?? "Data Source=lixoZero.db";
 
+// 2) DI padrão
+builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlite(cs));
+builder.Services.AddScoped<DescarteService>();
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddScoped<DescarteService>();
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlite("Data Source=lixoZero.db"));
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// 3) Garantir DB/tabelas (evita 500 por "no such table/unable to open")
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    try
+    {
+        db.Database.Migrate();
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"[DB] Migrate falhou: {ex.Message}. Tentando EnsureCreated()...");
+        db.Database.EnsureCreated();
+    }
+}
+
+// 4) Pipeline
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+// Redireciona para HTTPS apenas se NÃO estiver desabilitado por variável de ambiente
+var disableHttps = Environment.GetEnvironmentVariable("DISABLE_HTTPS_REDIRECT");
+if (!string.Equals(disableHttps, "true", StringComparison.OrdinalIgnoreCase))
+{
+    app.UseHttpsRedirection();
+}
 
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();

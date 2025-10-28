@@ -24,7 +24,6 @@ namespace LixoZero.Specs.Support
             // 1) Normaliza e filtra valores ruins/placeholder
             var candidate = (baseUrl ?? "").Trim();
 
-            // Se vier vazio, placeholder ou algo obviamente inválido, tenta ENV e depois default local
             if (string.IsNullOrWhiteSpace(candidate) ||
                 candidate.Contains("BASE_URL", StringComparison.OrdinalIgnoreCase) ||
                 candidate.Contains("<") || candidate.Contains(">"))
@@ -45,22 +44,24 @@ namespace LixoZero.Specs.Support
 
             _baseUri = uri;
 
-            // 3) Cria o RestClientOptions SEM passar string possivelmente nula
+            // 3) Cria o RestClientOptions
             var options = new RestClientOptions
             {
                 BaseUrl = _baseUri,
-                Timeout = TimeSpan.FromSeconds(60) // <- substitui o MaxTimeout obsoleto
+                Timeout = TimeSpan.FromSeconds(60)
             };
 
             _client = new RestClient(options);
             _client.AddDefaultHeader("Accept", "application/json");
         }
 
+        // Métodos públicos 
+
         public async Task<RestResponse> Get(string path)
         {
             var req = new RestRequest(Resource(path), Method.Get);
             var resp = await _client.ExecuteAsync(req);
-            Log(req, resp);
+            await LogAsync(req, resp, requestBody: null);
             return resp;
         }
 
@@ -68,7 +69,7 @@ namespace LixoZero.Specs.Support
         {
             var req = new RestRequest(Resource(path), Method.Delete);
             var resp = await _client.ExecuteAsync(req);
-            Log(req, resp);
+            await LogAsync(req, resp, requestBody: null);
             return resp;
         }
 
@@ -77,28 +78,30 @@ namespace LixoZero.Specs.Support
             var req = new RestRequest(Resource(path), Method.Post);
             // Compatível com versões recentes do RestSharp
             req.AddStringBody(jsonBody, "application/json");
+
             var resp = await _client.ExecuteAsync(req);
-            Log(req, resp);
+            await LogAsync(req, resp, requestBody: jsonBody);
             return resp;
         }
 
-        // ---------- helpers ----------
+        // helpers 
 
         private string Resource(string path)
         {
             if (string.IsNullOrWhiteSpace(path)) return "";
             var p = path.Trim();
 
-            // Se vier absoluta, manda como está
             if (Uri.TryCreate(p, UriKind.Absolute, out _)) return p;
 
-            // Usa relativo SEM a barra inicial para evitar ambiguidades
             return p.TrimStart('/');
         }
 
-        private void Log(RestRequest req, RestResponse resp)
+        private async Task LogAsync(RestRequest req, RestResponse resp, string? requestBody)
         {
+            // Uri final (se o RestSharp não devolver, monta a partir da base)
             var final = resp.ResponseUri ?? new Uri(_baseUri, req.Resource ?? "");
+
+            // Console curto (pra ver no output do runner)
             Console.WriteLine($"[HTTP] {req.Method} {final} -> {(int)resp.StatusCode} {resp.StatusCode}");
             if (!resp.IsSuccessful)
             {
@@ -106,6 +109,16 @@ namespace LixoZero.Specs.Support
                 if (!string.IsNullOrWhiteSpace(resp.ErrorMessage))
                     Console.WriteLine($"[HTTP] Error: {resp.ErrorMessage}");
             }
+
+            // Log completo (sem cortes) no arquivo via TestLog
+            // Obs.: resp.Content pode ser null em 204/HEAD; tratar como "<null>"
+            var content = resp.Content ?? "<null>";
+            var reqBodyForLog = string.IsNullOrWhiteSpace(requestBody) ? "<null>" : requestBody;
+
+            await TestLog.WriteAsync($@"[HTTP] {req.Method} {final}
+Status: {(int)resp.StatusCode} {resp.StatusCode}
+RequestBody: {reqBodyForLog}
+ResponseBody: {content}");
         }
 
         private static string NormalizeBaseUrl(string baseUrl)

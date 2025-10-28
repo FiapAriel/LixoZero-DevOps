@@ -1,19 +1,18 @@
-version: "3.9"
-
 services:
   api:
-    container_name: lixozero-api
     build:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "5038:8080"                # host 5038 -> container 8080 (Swagger em http://localhost:5038/swagger)
+      - "5038:8080"                # Swagger: http://localhost:5038/swagger
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development   # habilita Swagger dentro do container
+      - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:8080
-      # - DISABLE_HTTPS_REDIRECT=true   # lembrar de usar se https estiver redirecionando
+      - DISABLE_HTTPS_REDIRECT=true   # garante HTTP puro no container
+      # Se precisar forçar um caminho absoluto por ENV:
+      # - ConnectionStrings__DefaultConnection=Data Source=/app/lixoZero.db
     volumes:
-          - ./Data/lixoZero.db:/app/db/lixoZero.db:rw
+      - ./lixoZero.db:/app/lixoZero.db:rw
     networks:
       - lixo_net
     restart: unless-stopped

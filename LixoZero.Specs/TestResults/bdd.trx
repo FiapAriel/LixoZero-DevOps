@@ -1,25 +1,33 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TestRun id="8c8bd0ea-0e9e-4855-ab70-6e935476ae77" name="Ariel@ARIEL 2025-10-21 21:48:41" runUser="ARIEL\Ariel" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
-  <Times creation="2025-10-21T21:48:41.8316191-03:00" queuing="2025-10-21T21:48:41.8316195-03:00" start="2025-10-21T21:48:37.6575289-03:00" finish="2025-10-21T21:48:41.8572701-03:00" />
-  <TestSettings name="default" id="6d52f7e4-49ba-48b9-855b-0b09c83f88b9">
-    <Deployment runDeploymentRoot="Ariel_ARIEL_2025-10-21_21_48_41" />
+<TestRun id="0c395ada-ebeb-4f9a-b778-3904581639ba" name="Ariel@ARIEL 2025-10-28 18:27:11" runUser="ARIEL\Ariel" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2025-10-28T18:27:11.6206882-03:00" queuing="2025-10-28T18:27:11.6206887-03:00" start="2025-10-28T18:27:05.0418045-03:00" finish="2025-10-28T18:27:12.2751525-03:00" />
+  <TestSettings name="default" id="7c30bbd7-4735-427e-874f-9f9c44f38d72">
+    <Deployment runDeploymentRoot="Ariel_ARIEL_2025-10-28_18_27_11" />
   </TestSettings>
   <Results>
-    <UnitTestResult executionId="b684da44-ab39-41f8-ae16-f7cdf6b13a7a" testId="73da2116-e1d3-02f6-281a-51e797c0a99e" testName="Deletar um descarte existente retorna 204" computerName="ARIEL" duration="00:00:00.0547561" startTime="2025-10-21T21:48:41.4109019-03:00" endTime="2025-10-21T21:48:41.4662667-03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b684da44-ab39-41f8-ae16-f7cdf6b13a7a">
+    <UnitTestResult executionId="e69a08fe-2150-4da0-9935-0b09a96a48e8" testId="b39e9b27-e65f-470c-239d-1992e6b2ff42" testName="Deletar um descarte inexistente retorna 404" computerName="ARIEL" duration="00:00:00.1694256" startTime="2025-10-28T18:27:11.6700238-03:00" endTime="2025-10-28T18:27:11.8399091-03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e69a08fe-2150-4da0-9935-0b09a96a48e8">
       <Output>
         <StdOut>Dado que a base URL da API é "&lt;BASE_URL&gt;"&#xD;
 -&gt; done: ApiSteps.GivenBaseUrl("&lt;BASE_URL&gt;") (0,0s)&#xD;
-Dado que exista um descarte criado via POST em "/api/Descartes" com o corpo:&#xD;
-  --- multiline step argument ---&#xD;
-  { "bairro":"Bela Vista", "tipo":2, "quantidadeKg":0.7, "dataHora":"2025-10-10T22:09:47.709Z" }&#xD;
--&gt; done: ApiSteps.GivenThereIsACreatedItem("/api/Descartes", "{ "bairro":"Bela ...") (0,0s)&#xD;
-Quando eu fizer DELETE para "/api/Descartes/{idCriado}"&#xD;
--&gt; done: ApiSteps.WhenDelete("/api/Descartes/{i...") (0,0s)&#xD;
-Então o status da resposta deve ser 204&#xD;
--&gt; done: ApiSteps.ThenStatusShouldBe(204) (0,0s)</StdOut>
+Quando eu fizer DELETE para "/api/Descartes/999999"&#xD;
+-&gt; done: ApiSteps.WhenDelete("/api/Descartes/99...") (0,2s)&#xD;
+Então o status da resposta deve ser 404&#xD;
+-&gt; done: ApiSteps.ThenStatusShouldBe(404) (0,0s)</StdOut>
       </Output>
     </UnitTestResult>
-    <UnitTestResult executionId="a11bdb23-4542-4f66-90ba-a7765c766b07" testId="24df5d02-a4af-b2c6-595b-4b200626f20a" testName="Consultar por ID inexistente retorna 404" computerName="ARIEL" duration="00:00:00.0222572" startTime="2025-10-21T21:48:41.2195007-03:00" endTime="2025-10-21T21:48:41.2427572-03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a11bdb23-4542-4f66-90ba-a7765c766b07">
+    <UnitTestResult executionId="0de930f1-f446-47a5-b78c-3e8ee03489e6" testId="52686edb-d8e3-03d3-aa4c-e582e14ade13" testName="Cadastrar descarte inválido (quantidade &lt;= 0) retorna 400" computerName="ARIEL" duration="00:00:00.1267448" startTime="2025-10-28T18:27:11.5153836-03:00" endTime="2025-10-28T18:27:11.6427961-03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0de930f1-f446-47a5-b78c-3e8ee03489e6">
+      <Output>
+        <StdOut>Dado que a base URL da API é "http://localhost:5038"&#xD;
+-&gt; done: ApiSteps.GivenBaseUrl("http://localhost:...") (0,0s)&#xD;
+Quando eu fizer POST para "/api/Descartes" com o corpo JSON:&#xD;
+  --- multiline step argument ---&#xD;
+  { "bairro":"Centro", "tipo":0, "quantidadeKg":0, "dataHora":"2025-10-10T22:09:47.709Z" }&#xD;
+-&gt; done: ApiSteps.WhenPostWithBody("/api/Descartes", "{ "bairro":"Centr...") (0,1s)&#xD;
+Então o status da resposta deve ser 400&#xD;
+-&gt; done: ApiSteps.ThenStatusShouldBe(400) (0,0s)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="106179cc-d644-4849-9baf-779f48614de7" testId="24df5d02-a4af-b2c6-595b-4b200626f20a" testName="Consultar por ID inexistente retorna 404" computerName="ARIEL" duration="00:00:00.0317932" startTime="2025-10-28T18:27:12.0030452-03:00" endTime="2025-10-28T18:27:12.0354134-03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="106179cc-d644-4849-9baf-779f48614de7">
       <Output>
         <StdOut>Dado que a base URL da API é "http://localhost:5038"&#xD;
 -&gt; done: ApiSteps.GivenBaseUrl("http://localhost:...") (0,0s)&#xD;
@@ -29,18 +37,38 @@ Então o status da resposta deve ser 404&#xD;
 -&gt; done: ApiSteps.ThenStatusShouldBe(404) (0,0s)</StdOut>
       </Output>
     </UnitTestResult>
-    <UnitTestResult executionId="dc4d11b7-f275-4b01-95d1-d5e16c0a1f78" testId="1ed4a862-9645-c83d-46f2-0bf5478460a4" testName="Cadastrar descarte válido retorna 201 e corpo no contrato" computerName="ARIEL" duration="00:00:00.0377443" startTime="2025-10-21T21:48:41.2882531-03:00" endTime="2025-10-21T21:48:41.3270191-03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="dc4d11b7-f275-4b01-95d1-d5e16c0a1f78">
+    <UnitTestResult executionId="2ffaea2c-c412-432a-9fea-56d6488c7415" testId="19924d02-6ed4-2a2f-6950-1a85ad18cc3a" testName="Consultar por ID existente retorna 200 e contrato válido" computerName="ARIEL" duration="00:00:00.0623724" startTime="2025-10-28T18:27:11.9321645-03:00" endTime="2025-10-28T18:27:11.9960985-03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2ffaea2c-c412-432a-9fea-56d6488c7415">
+      <Output>
+        <StdOut>Dado que a base URL da API é "http://localhost:5038"&#xD;
+-&gt; done: ApiSteps.GivenBaseUrl("http://localhost:...") (0,0s)&#xD;
+Dado que exista um descarte criado via POST em "/api/Descartes" com o corpo:&#xD;
+  --- multiline step argument ---&#xD;
+  { "bairro":"Centro", "tipo":1, "quantidadeKg":1.5, "dataHora":"2025-10-10T22:09:47.709Z" }&#xD;
+-&gt; done: ApiSteps.GivenThereIsACreatedItem("/api/Descartes", "{ "bairro":"Centr...") (0,0s)&#xD;
+Quando eu fizer GET para "/api/Descartes/{idCriado}"&#xD;
+-&gt; done: ApiSteps.WhenGet("/api/Descartes/{i...") (0,0s)&#xD;
+Então o status da resposta deve ser 200&#xD;
+-&gt; done: ApiSteps.ThenStatusShouldBe(200) (0,0s)&#xD;
+E o corpo JSON deve obedecer ao schema "Schemas/descarte.schema.json"&#xD;
+-&gt; done: ApiSteps.ThenBodyMatchesSchema("Schemas/descarte....") (0,0s)&#xD;
+E o campo "tipo" deve ser 1&#xD;
+-&gt; done: ApiSteps.ThenFieldNumberEquals("tipo", "1") (0,0s)&#xD;
+E o campo "quantidadeKg" deve ser 1.5&#xD;
+-&gt; done: ApiSteps.ThenFieldNumberEquals("quantidadeKg", "1.5") (0,0s)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="60add5c0-8d46-4128-bed8-a7129e1f5772" testId="1ed4a862-9645-c83d-46f2-0bf5478460a4" testName="Cadastrar descarte válido retorna 201 e corpo no contrato" computerName="ARIEL" duration="00:00:01.4347373" startTime="2025-10-28T18:27:10.0300208-03:00" endTime="2025-10-28T18:27:11.4852891-03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="60add5c0-8d46-4128-bed8-a7129e1f5772">
       <Output>
         <StdOut>Dado que a base URL da API é "http://localhost:5038"&#xD;
 -&gt; done: ApiSteps.GivenBaseUrl("http://localhost:...") (0,0s)&#xD;
 Quando eu fizer POST para "/api/Descartes" com o corpo JSON:&#xD;
   --- multiline step argument ---&#xD;
   { "bairro":"Centro", "tipo":0, "quantidadeKg":0.25, "dataHora":"2025-10-10T22:09:47.709Z" }&#xD;
--&gt; done: ApiSteps.WhenPostWithBody("/api/Descartes", "{ "bairro":"Centr...") (0,0s)&#xD;
+-&gt; done: ApiSteps.WhenPostWithBody("/api/Descartes", "{ "bairro":"Centr...") (0,2s)&#xD;
 Então o status da resposta deve ser 201&#xD;
 -&gt; done: ApiSteps.ThenStatusShouldBe(201) (0,0s)&#xD;
 E o corpo JSON deve obedecer ao schema "Schemas/descarte.schema.json"&#xD;
--&gt; done: ApiSteps.ThenBodyMatchesSchema("Schemas/descarte....") (0,0s)&#xD;
+-&gt; done: ApiSteps.ThenBodyMatchesSchema("Schemas/descarte....") (0,9s)&#xD;
 E o campo "bairro" deve ser "Centro"&#xD;
 -&gt; done: ApiSteps.ThenFieldStringEquals("bairro", "Centro") (0,0s)&#xD;
 E o campo "tipo" deve ser 0&#xD;
@@ -49,112 +77,84 @@ E o campo "quantidadeKg" deve ser 0.25&#xD;
 -&gt; done: ApiSteps.ThenFieldNumberEquals("quantidadeKg", "0.25") (0,0s)</StdOut>
       </Output>
     </UnitTestResult>
-    <UnitTestResult executionId="04c1f33d-5076-4be0-8ccb-0c04200a00b6" testId="52686edb-d8e3-03d3-aa4c-e582e14ade13" testName="Cadastrar descarte inválido (quantidade &lt;= 0) retorna 400" computerName="ARIEL" duration="00:00:00.0160653" startTime="2025-10-21T21:48:41.3296918-03:00" endTime="2025-10-21T21:48:41.3462811-03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="04c1f33d-5076-4be0-8ccb-0c04200a00b6">
-      <Output>
-        <StdOut>Dado que a base URL da API é "http://localhost:5038"&#xD;
--&gt; done: ApiSteps.GivenBaseUrl("http://localhost:...") (0,0s)&#xD;
-Quando eu fizer POST para "/api/Descartes" com o corpo JSON:&#xD;
-  --- multiline step argument ---&#xD;
-  { "bairro":"Centro", "tipo":0, "quantidadeKg":0, "dataHora":"2025-10-10T22:09:47.709Z" }&#xD;
--&gt; done: ApiSteps.WhenPostWithBody("/api/Descartes", "{ "bairro":"Centr...") (0,0s)&#xD;
-Então o status da resposta deve ser 400&#xD;
--&gt; done: ApiSteps.ThenStatusShouldBe(400) (0,0s)</StdOut>
-      </Output>
-    </UnitTestResult>
-    <UnitTestResult executionId="b0fa9db7-dc9c-4c47-8847-ed156e738a98" testId="19924d02-6ed4-2a2f-6950-1a85ad18cc3a" testName="Consultar por ID existente retorna 200 e contrato válido" computerName="ARIEL" duration="00:00:00.7270084" startTime="2025-10-21T21:48:40.3982462-03:00" endTime="2025-10-21T21:48:41.1532828-03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b0fa9db7-dc9c-4c47-8847-ed156e738a98">
-      <Output>
-        <StdOut>Dado que a base URL da API é "http://localhost:5038"&#xD;
--&gt; done: ApiSteps.GivenBaseUrl("http://localhost:...") (0,0s)&#xD;
-Dado que exista um descarte criado via POST em "/api/Descartes" com o corpo:&#xD;
-  --- multiline step argument ---&#xD;
-  { "bairro":"Centro", "tipo":1, "quantidadeKg":1.5, "dataHora":"2025-10-10T22:09:47.709Z" }&#xD;
--&gt; done: ApiSteps.GivenThereIsACreatedItem("/api/Descartes", "{ "bairro":"Centr...") (0,2s)&#xD;
-Quando eu fizer GET para "/api/Descartes/{idCriado}"&#xD;
--&gt; done: ApiSteps.WhenGet("/api/Descartes/{i...") (0,0s)&#xD;
-Então o status da resposta deve ser 200&#xD;
--&gt; done: ApiSteps.ThenStatusShouldBe(200) (0,0s)&#xD;
-E o corpo JSON deve obedecer ao schema "Schemas/descarte.schema.json"&#xD;
--&gt; done: ApiSteps.ThenBodyMatchesSchema("Schemas/descarte....") (0,3s)&#xD;
-E o campo "tipo" deve ser 1&#xD;
--&gt; done: ApiSteps.ThenFieldNumberEquals("tipo", "1") (0,0s)&#xD;
-E o campo "quantidadeKg" deve ser 1.5&#xD;
--&gt; done: ApiSteps.ThenFieldNumberEquals("quantidadeKg", "1.5") (0,0s)</StdOut>
-      </Output>
-    </UnitTestResult>
-    <UnitTestResult executionId="7fc88976-91f7-4c15-998c-e7109c046597" testId="b39e9b27-e65f-470c-239d-1992e6b2ff42" testName="Deletar um descarte inexistente retorna 404" computerName="ARIEL" duration="00:00:00.0357785" startTime="2025-10-21T21:48:41.3713270-03:00" endTime="2025-10-21T21:48:41.4081947-03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7fc88976-91f7-4c15-998c-e7109c046597">
+    <UnitTestResult executionId="89ee2db1-b0cc-4c53-a41f-51f051935465" testId="73da2116-e1d3-02f6-281a-51e797c0a99e" testName="Deletar um descarte existente retorna 204" computerName="ARIEL" duration="00:00:00.0781414" startTime="2025-10-28T18:27:11.8413953-03:00" endTime="2025-10-28T18:27:11.9200257-03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="89ee2db1-b0cc-4c53-a41f-51f051935465">
       <Output>
         <StdOut>Dado que a base URL da API é "&lt;BASE_URL&gt;"&#xD;
 -&gt; done: ApiSteps.GivenBaseUrl("&lt;BASE_URL&gt;") (0,0s)&#xD;
-Quando eu fizer DELETE para "/api/Descartes/999999"&#xD;
--&gt; done: ApiSteps.WhenDelete("/api/Descartes/99...") (0,0s)&#xD;
-Então o status da resposta deve ser 404&#xD;
--&gt; done: ApiSteps.ThenStatusShouldBe(404) (0,0s)</StdOut>
+Dado que exista um descarte criado via POST em "/api/Descartes" com o corpo:&#xD;
+  --- multiline step argument ---&#xD;
+  { "bairro":"Bela Vista", "tipo":2, "quantidadeKg":0.7, "dataHora":"2025-10-10T22:09:47.709Z" }&#xD;
+-&gt; done: ApiSteps.GivenThereIsACreatedItem("/api/Descartes", "{ "bairro":"Bela ...") (0,0s)&#xD;
+Quando eu fizer DELETE para "/api/Descartes/{idCriado}"&#xD;
+-&gt; done: ApiSteps.WhenDelete("/api/Descartes/{i...") (0,1s)&#xD;
+Então o status da resposta deve ser 204&#xD;
+-&gt; done: ApiSteps.ThenStatusShouldBe(204) (0,0s)</StdOut>
       </Output>
     </UnitTestResult>
   </Results>
   <TestDefinitions>
     <UnitTest name="Cadastrar descarte válido retorna 201 e corpo no contrato" storage="c:\users\ariel\downloads\lixozero\lixozero.specs\bin\release\net8.0\lixozero.specs.dll" id="1ed4a862-9645-c83d-46f2-0bf5478460a4">
       <Properties>
-        <Property Key="Category" Value="api" />
         <Property Key="FeatureTitle" Value="Cadastro de Descarte" />
+        <Property Key="Category" Value="api" />
         <Property Key="Description" Value="Cadastrar descarte válido retorna 201 e corpo no contrato" />
       </Properties>
-      <Execution id="dc4d11b7-f275-4b01-95d1-d5e16c0a1f78" />
+      <Execution id="60add5c0-8d46-4128-bed8-a7129e1f5772" />
       <TestMethod codeBase="C:\Users\Ariel\Downloads\LixoZero\LixoZero.Specs\bin\Release\net8.0\LixoZero.Specs.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="LixoZero.Specs.Features.CadastroDeDescarteFeature" name="CadastrarDescarteValidoRetorna201ECorpoNoContrato" />
     </UnitTest>
     <UnitTest name="Deletar um descarte inexistente retorna 404" storage="c:\users\ariel\downloads\lixozero\lixozero.specs\bin\release\net8.0\lixozero.specs.dll" id="b39e9b27-e65f-470c-239d-1992e6b2ff42">
       <Properties>
-        <Property Key="Category" Value="api" />
         <Property Key="FeatureTitle" Value="Exclusão de descarte por ID" />
+        <Property Key="Category" Value="api" />
         <Property Key="Description" Value="Deletar um descarte inexistente retorna 404" />
       </Properties>
-      <Execution id="7fc88976-91f7-4c15-998c-e7109c046597" />
+      <Execution id="e69a08fe-2150-4da0-9935-0b09a96a48e8" />
       <TestMethod codeBase="C:\Users\Ariel\Downloads\LixoZero\LixoZero.Specs\bin\Release\net8.0\LixoZero.Specs.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="LixoZero.Specs.Features.ExclusaoDeDescartePorIDFeature" name="DeletarUmDescarteInexistenteRetorna404" />
     </UnitTest>
     <UnitTest name="Consultar por ID inexistente retorna 404" storage="c:\users\ariel\downloads\lixozero\lixozero.specs\bin\release\net8.0\lixozero.specs.dll" id="24df5d02-a4af-b2c6-595b-4b200626f20a">
       <Properties>
-        <Property Key="Category" Value="api" />
         <Property Key="FeatureTitle" Value="Consulta de descarte por ID" />
+        <Property Key="Category" Value="api" />
         <Property Key="Description" Value="Consultar por ID inexistente retorna 404" />
       </Properties>
-      <Execution id="a11bdb23-4542-4f66-90ba-a7765c766b07" />
+      <Execution id="106179cc-d644-4849-9baf-779f48614de7" />
       <TestMethod codeBase="C:\Users\Ariel\Downloads\LixoZero\LixoZero.Specs\bin\Release\net8.0\LixoZero.Specs.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="LixoZero.Specs.Features.ConsultaDeDescartePorIDFeature" name="ConsultarPorIDInexistenteRetorna404" />
     </UnitTest>
     <UnitTest name="Consultar por ID existente retorna 200 e contrato válido" storage="c:\users\ariel\downloads\lixozero\lixozero.specs\bin\release\net8.0\lixozero.specs.dll" id="19924d02-6ed4-2a2f-6950-1a85ad18cc3a">
       <Properties>
-        <Property Key="Category" Value="api" />
         <Property Key="FeatureTitle" Value="Consulta de descarte por ID" />
+        <Property Key="Category" Value="api" />
         <Property Key="Description" Value="Consultar por ID existente retorna 200 e contrato válido" />
       </Properties>
-      <Execution id="b0fa9db7-dc9c-4c47-8847-ed156e738a98" />
+      <Execution id="2ffaea2c-c412-432a-9fea-56d6488c7415" />
       <TestMethod codeBase="C:\Users\Ariel\Downloads\LixoZero\LixoZero.Specs\bin\Release\net8.0\LixoZero.Specs.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="LixoZero.Specs.Features.ConsultaDeDescartePorIDFeature" name="ConsultarPorIDExistenteRetorna200EContratoValido" />
     </UnitTest>
     <UnitTest name="Cadastrar descarte inválido (quantidade &lt;= 0) retorna 400" storage="c:\users\ariel\downloads\lixozero\lixozero.specs\bin\release\net8.0\lixozero.specs.dll" id="52686edb-d8e3-03d3-aa4c-e582e14ade13">
       <Properties>
-        <Property Key="Category" Value="api" />
         <Property Key="FeatureTitle" Value="Cadastro de Descarte" />
+        <Property Key="Category" Value="api" />
         <Property Key="Description" Value="Cadastrar descarte inválido (quantidade &lt;= 0) retorna 400" />
       </Properties>
-      <Execution id="04c1f33d-5076-4be0-8ccb-0c04200a00b6" />
+      <Execution id="0de930f1-f446-47a5-b78c-3e8ee03489e6" />
       <TestMethod codeBase="C:\Users\Ariel\Downloads\LixoZero\LixoZero.Specs\bin\Release\net8.0\LixoZero.Specs.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="LixoZero.Specs.Features.CadastroDeDescarteFeature" name="CadastrarDescarteInvalidoQuantidade0Retorna400" />
     </UnitTest>
     <UnitTest name="Deletar um descarte existente retorna 204" storage="c:\users\ariel\downloads\lixozero\lixozero.specs\bin\release\net8.0\lixozero.specs.dll" id="73da2116-e1d3-02f6-281a-51e797c0a99e">
       <Properties>
-        <Property Key="Category" Value="api" />
         <Property Key="FeatureTitle" Value="Exclusão de descarte por ID" />
+        <Property Key="Category" Value="api" />
         <Property Key="Description" Value="Deletar um descarte existente retorna 204" />
       </Properties>
-      <Execution id="b684da44-ab39-41f8-ae16-f7cdf6b13a7a" />
+      <Execution id="89ee2db1-b0cc-4c53-a41f-51f051935465" />
       <TestMethod codeBase="C:\Users\Ariel\Downloads\LixoZero\LixoZero.Specs\bin\Release\net8.0\LixoZero.Specs.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="LixoZero.Specs.Features.ExclusaoDeDescartePorIDFeature" name="DeletarUmDescarteExistenteRetorna204" />
     </UnitTest>
   </TestDefinitions>
   <TestEntries>
-    <TestEntry testId="73da2116-e1d3-02f6-281a-51e797c0a99e" executionId="b684da44-ab39-41f8-ae16-f7cdf6b13a7a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
-    <TestEntry testId="24df5d02-a4af-b2c6-595b-4b200626f20a" executionId="a11bdb23-4542-4f66-90ba-a7765c766b07" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
-    <TestEntry testId="1ed4a862-9645-c83d-46f2-0bf5478460a4" executionId="dc4d11b7-f275-4b01-95d1-d5e16c0a1f78" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
-    <TestEntry testId="52686edb-d8e3-03d3-aa4c-e582e14ade13" executionId="04c1f33d-5076-4be0-8ccb-0c04200a00b6" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
-    <TestEntry testId="19924d02-6ed4-2a2f-6950-1a85ad18cc3a" executionId="b0fa9db7-dc9c-4c47-8847-ed156e738a98" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
-    <TestEntry testId="b39e9b27-e65f-470c-239d-1992e6b2ff42" executionId="7fc88976-91f7-4c15-998c-e7109c046597" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b39e9b27-e65f-470c-239d-1992e6b2ff42" executionId="e69a08fe-2150-4da0-9935-0b09a96a48e8" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="52686edb-d8e3-03d3-aa4c-e582e14ade13" executionId="0de930f1-f446-47a5-b78c-3e8ee03489e6" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="24df5d02-a4af-b2c6-595b-4b200626f20a" executionId="106179cc-d644-4849-9baf-779f48614de7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="19924d02-6ed4-2a2f-6950-1a85ad18cc3a" executionId="2ffaea2c-c412-432a-9fea-56d6488c7415" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1ed4a862-9645-c83d-46f2-0bf5478460a4" executionId="60add5c0-8d46-4128-bed8-a7129e1f5772" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="73da2116-e1d3-02f6-281a-51e797c0a99e" executionId="89ee2db1-b0cc-4c53-a41f-51f051935465" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
   </TestEntries>
   <TestLists>
     <TestList name="Resultados que não estão em uma lista" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
@@ -164,9 +164,9 @@ Então o status da resposta deve ser 404&#xD;
     <Counters total="6" executed="6" passed="6" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
     <Output>
       <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 8.0.21)&#xD;
-[xUnit.net 00:00:00.24]   Discovering: LixoZero.Specs (app domain = off, method display = ClassAndMethod, method display options = None)&#xD;
-[xUnit.net 00:00:00.38]   Discovered:  LixoZero.Specs (6 test cases to be run)&#xD;
-[xUnit.net 00:00:00.43]   Starting:    LixoZero.Specs (parallel test collections = off, stop on fail = off, explicit = off)&#xD;
+[xUnit.net 00:00:01.44]   Discovering: LixoZero.Specs (app domain = off, method display = ClassAndMethod, method display options = None)&#xD;
+[xUnit.net 00:00:01.74]   Discovered:  LixoZero.Specs (6 test cases to be run)&#xD;
+[xUnit.net 00:00:01.79]   Starting:    LixoZero.Specs (parallel test collections = off, stop on fail = off, explicit = off)&#xD;
 -&gt; Loading plugin C:\Users\Ariel\Downloads\LixoZero\LixoZero.Specs\bin\Release\net8.0\TechTalk.SpecFlow.xUnit.SpecFlowPlugin.dll&#xD;
 -&gt; Loading plugin C:\Users\Ariel\Downloads\LixoZero\LixoZero.Specs\bin\Release\net8.0\LixoZero.Specs.dll&#xD;
 -&gt; Using specflow.json&#xD;
@@ -180,91 +180,91 @@ Então o status da resposta deve ser 404&#xD;
      Fluent Assertions users under both commercial and community licenses. Help us&#xD;
      keep Fluent Assertions at the forefront of unit testing.&#xD;
      For more information, visit https://xceed.com/products/unit-testing/fluent-assertions/&#xD;
-[HTTP] Get http://localhost:5038/api/Descartes/29 -&gt; 200 OK&#xD;
-[xUnit.net 00:00:01.59]     Consultar por ID existente retorna 200 e contrato válido [PASS]&#xD;
-[xUnit.net 00:00:01.59]       Output:&#xD;
-[xUnit.net 00:00:01.59]         Dado que a base URL da API é "http://localhost:5038"&#xD;
-[xUnit.net 00:00:01.59]         -&gt; done: ApiSteps.GivenBaseUrl("http://localhost:...") (0,0s)&#xD;
-[xUnit.net 00:00:01.59]         Dado que exista um descarte criado via POST em "/api/Descartes" com o corpo:&#xD;
-[xUnit.net 00:00:01.59]           --- multiline step argument ---&#xD;
-[xUnit.net 00:00:01.59]           { "bairro":"Centro", "tipo":1, "quantidadeKg":1.5, "dataHora":"2025-10-10T22:09:47.709Z" }&#xD;
-[xUnit.net 00:00:01.59]         -&gt; done: ApiSteps.GivenThereIsACreatedItem("/api/Descartes", "{ "bairro":"Centr...") (0,2s)&#xD;
-[xUnit.net 00:00:01.59]         Quando eu fizer GET para "/api/Descartes/{idCriado}"&#xD;
-[xUnit.net 00:00:01.59]         -&gt; done: ApiSteps.WhenGet("/api/Descartes/{i...") (0,0s)&#xD;
-[xUnit.net 00:00:01.59]         Então o status da resposta deve ser 200&#xD;
-[xUnit.net 00:00:01.59]         -&gt; done: ApiSteps.ThenStatusShouldBe(200) (0,0s)&#xD;
-[xUnit.net 00:00:01.59]         E o corpo JSON deve obedecer ao schema "Schemas/descarte.schema.json"&#xD;
-[xUnit.net 00:00:01.59]         -&gt; done: ApiSteps.ThenBodyMatchesSchema("Schemas/descarte....") (0,3s)&#xD;
-[xUnit.net 00:00:01.59]         E o campo "tipo" deve ser 1&#xD;
-[xUnit.net 00:00:01.59]         -&gt; done: ApiSteps.ThenFieldNumberEquals("tipo", "1") (0,0s)&#xD;
-[xUnit.net 00:00:01.59]         E o campo "quantidadeKg" deve ser 1.5&#xD;
-[xUnit.net 00:00:01.59]         -&gt; done: ApiSteps.ThenFieldNumberEquals("quantidadeKg", "1.5") (0,0s)&#xD;
-[HTTP] Get http://localhost:5038/api/Descartes/999999 -&gt; 404 NotFound&#xD;
-[HTTP] Content: {"type":"https://tools.ietf.org/html/rfc9110#section-15.5.5","title":"Not Found","status":404,"traceId":"00-cf46b1c55f85525b1f682970d626e12c-c946304e637d0ac8-00"}&#xD;
-[xUnit.net 00:00:01.67]     Consultar por ID inexistente retorna 404 [PASS]&#xD;
-[xUnit.net 00:00:01.67]       Output:&#xD;
-[xUnit.net 00:00:01.68]         Dado que a base URL da API é "http://localhost:5038"&#xD;
-[xUnit.net 00:00:01.68]         -&gt; done: ApiSteps.GivenBaseUrl("http://localhost:...") (0,0s)&#xD;
-[xUnit.net 00:00:01.68]         Quando eu fizer GET para "/api/Descartes/999999"&#xD;
-[xUnit.net 00:00:01.68]         -&gt; done: ApiSteps.WhenGet("/api/Descartes/99...") (0,0s)&#xD;
-[xUnit.net 00:00:01.68]         Então o status da resposta deve ser 404&#xD;
-[xUnit.net 00:00:01.68]         -&gt; done: ApiSteps.ThenStatusShouldBe(404) (0,0s)&#xD;
-[HTTP] Post http://localhost:5038/api/Descartes -&gt; 201 Created&#xD;
-[xUnit.net 00:00:01.76]     Cadastrar descarte válido retorna 201 e corpo no contrato [PASS]&#xD;
-[xUnit.net 00:00:01.76]       Output:&#xD;
-[xUnit.net 00:00:01.76]         Dado que a base URL da API é "http://localhost:5038"&#xD;
-[xUnit.net 00:00:01.76]         -&gt; done: ApiSteps.GivenBaseUrl("http://localhost:...") (0,0s)&#xD;
-[xUnit.net 00:00:01.76]         Quando eu fizer POST para "/api/Descartes" com o corpo JSON:&#xD;
-[xUnit.net 00:00:01.76]           --- multiline step argument ---&#xD;
-[xUnit.net 00:00:01.76]           { "bairro":"Centro", "tipo":0, "quantidadeKg":0.25, "dataHora":"2025-10-10T22:09:47.709Z" }&#xD;
-[xUnit.net 00:00:01.76]         -&gt; done: ApiSteps.WhenPostWithBody("/api/Descartes", "{ "bairro":"Centr...") (0,0s)&#xD;
-[xUnit.net 00:00:01.76]         Então o status da resposta deve ser 201&#xD;
-[xUnit.net 00:00:01.76]         -&gt; done: ApiSteps.ThenStatusShouldBe(201) (0,0s)&#xD;
-[xUnit.net 00:00:01.76]         E o corpo JSON deve obedecer ao schema "Schemas/descarte.schema.json"&#xD;
-[xUnit.net 00:00:01.76]         -&gt; done: ApiSteps.ThenBodyMatchesSchema("Schemas/descarte....") (0,0s)&#xD;
-[xUnit.net 00:00:01.76]         E o campo "bairro" deve ser "Centro"&#xD;
-[xUnit.net 00:00:01.76]         -&gt; done: ApiSteps.ThenFieldStringEquals("bairro", "Centro") (0,0s)&#xD;
-[xUnit.net 00:00:01.76]         E o campo "tipo" deve ser 0&#xD;
-[xUnit.net 00:00:01.76]         -&gt; done: ApiSteps.ThenFieldNumberEquals("tipo", "0") (0,0s)&#xD;
-[xUnit.net 00:00:01.76]         E o campo "quantidadeKg" deve ser 0.25&#xD;
-[xUnit.net 00:00:01.76]         -&gt; done: ApiSteps.ThenFieldNumberEquals("quantidadeKg", "0.25") (0,0s)&#xD;
+[xUnit.net 00:00:04.46]     Cadastrar descarte válido retorna 201 e corpo no contrato [PASS]&#xD;
+[xUnit.net 00:00:04.46]       Output:&#xD;
+[xUnit.net 00:00:04.46]         Dado que a base URL da API é "http://localhost:5038"&#xD;
+[xUnit.net 00:00:04.46]         -&gt; done: ApiSteps.GivenBaseUrl("http://localhost:...") (0,0s)&#xD;
+[xUnit.net 00:00:04.46]         Quando eu fizer POST para "/api/Descartes" com o corpo JSON:&#xD;
+[xUnit.net 00:00:04.46]           --- multiline step argument ---&#xD;
+[xUnit.net 00:00:04.46]           { "bairro":"Centro", "tipo":0, "quantidadeKg":0.25, "dataHora":"2025-10-10T22:09:47.709Z" }&#xD;
+[xUnit.net 00:00:04.46]         -&gt; done: ApiSteps.WhenPostWithBody("/api/Descartes", "{ "bairro":"Centr...") (0,2s)&#xD;
+[xUnit.net 00:00:04.46]         Então o status da resposta deve ser 201&#xD;
+[xUnit.net 00:00:04.46]         -&gt; done: ApiSteps.ThenStatusShouldBe(201) (0,0s)&#xD;
+[xUnit.net 00:00:04.46]         E o corpo JSON deve obedecer ao schema "Schemas/descarte.schema.json"&#xD;
+[xUnit.net 00:00:04.46]         -&gt; done: ApiSteps.ThenBodyMatchesSchema("Schemas/descarte....") (0,9s)&#xD;
+[xUnit.net 00:00:04.46]         E o campo "bairro" deve ser "Centro"&#xD;
+[xUnit.net 00:00:04.46]         -&gt; done: ApiSteps.ThenFieldStringEquals("bairro", "Centro") (0,0s)&#xD;
+[xUnit.net 00:00:04.46]         E o campo "tipo" deve ser 0&#xD;
+[xUnit.net 00:00:04.46]         -&gt; done: ApiSteps.ThenFieldNumberEquals("tipo", "0") (0,0s)&#xD;
+[xUnit.net 00:00:04.46]         E o campo "quantidadeKg" deve ser 0.25&#xD;
+[xUnit.net 00:00:04.46]         -&gt; done: ApiSteps.ThenFieldNumberEquals("quantidadeKg", "0.25") (0,0s)&#xD;
 [HTTP] Post http://localhost:5038/api/Descartes -&gt; 400 BadRequest&#xD;
-[HTTP] Content: {"type":"https://tools.ietf.org/html/rfc9110#section-15.5.1","title":"One or more validation errors occurred.","status":400,"errors":{"QuantidadeKg":["Quantidade deve ser maior que zero."]},"traceId":"00-ebe53c5fe874d42982f2b4d33a54fa6a-718ff54a87c735e1-00"}&#xD;
-[xUnit.net 00:00:01.78]     Cadastrar descarte inválido (quantidade &lt;= 0) retorna 400 [PASS]&#xD;
-[xUnit.net 00:00:01.78]       Output:&#xD;
-[xUnit.net 00:00:01.78]         Dado que a base URL da API é "http://localhost:5038"&#xD;
-[xUnit.net 00:00:01.78]         -&gt; done: ApiSteps.GivenBaseUrl("http://localhost:...") (0,0s)&#xD;
-[xUnit.net 00:00:01.78]         Quando eu fizer POST para "/api/Descartes" com o corpo JSON:&#xD;
-[xUnit.net 00:00:01.78]           --- multiline step argument ---&#xD;
-[xUnit.net 00:00:01.78]           { "bairro":"Centro", "tipo":0, "quantidadeKg":0, "dataHora":"2025-10-10T22:09:47.709Z" }&#xD;
-[xUnit.net 00:00:01.78]         -&gt; done: ApiSteps.WhenPostWithBody("/api/Descartes", "{ "bairro":"Centr...") (0,0s)&#xD;
-[xUnit.net 00:00:01.78]         Então o status da resposta deve ser 400&#xD;
-[xUnit.net 00:00:01.78]         -&gt; done: ApiSteps.ThenStatusShouldBe(400) (0,0s)&#xD;
+[HTTP] Content: {"type":"https://tools.ietf.org/html/rfc9110#section-15.5.1","title":"One or more validation errors occurred.","status":400,"errors":{"QuantidadeKg":["Quantidade deve ser maior que zero."]},"traceId":"00-f18d7c51ad2a8e5a514564eb987dd414-86239b5d72833cb2-00"}&#xD;
+[xUnit.net 00:00:04.61]     Cadastrar descarte inválido (quantidade &lt;= 0) retorna 400 [PASS]&#xD;
+[xUnit.net 00:00:04.61]       Output:&#xD;
+[xUnit.net 00:00:04.61]         Dado que a base URL da API é "http://localhost:5038"&#xD;
+[xUnit.net 00:00:04.61]         -&gt; done: ApiSteps.GivenBaseUrl("http://localhost:...") (0,0s)&#xD;
+[xUnit.net 00:00:04.61]         Quando eu fizer POST para "/api/Descartes" com o corpo JSON:&#xD;
+[xUnit.net 00:00:04.61]           --- multiline step argument ---&#xD;
+[xUnit.net 00:00:04.61]           { "bairro":"Centro", "tipo":0, "quantidadeKg":0, "dataHora":"2025-10-10T22:09:47.709Z" }&#xD;
+[xUnit.net 00:00:04.61]         -&gt; done: ApiSteps.WhenPostWithBody("/api/Descartes", "{ "bairro":"Centr...") (0,1s)&#xD;
+[xUnit.net 00:00:04.61]         Então o status da resposta deve ser 400&#xD;
+[xUnit.net 00:00:04.61]         -&gt; done: ApiSteps.ThenStatusShouldBe(400) (0,0s)&#xD;
 [HTTP] Delete http://localhost:5038/api/Descartes/999999 -&gt; 404 NotFound&#xD;
-[HTTP] Content: {"type":"https://tools.ietf.org/html/rfc9110#section-15.5.5","title":"Not Found","status":404,"traceId":"00-f1122197e0750cb60face7acefd25b28-da7b3077f4da18a1-00"}&#xD;
-[xUnit.net 00:00:01.84]     Deletar um descarte inexistente retorna 404 [PASS]&#xD;
-[xUnit.net 00:00:01.84]       Output:&#xD;
-[xUnit.net 00:00:01.84]         Dado que a base URL da API é "&lt;BASE_URL&gt;"&#xD;
-[xUnit.net 00:00:01.84]         -&gt; done: ApiSteps.GivenBaseUrl("&lt;BASE_URL&gt;") (0,0s)&#xD;
-[xUnit.net 00:00:01.84]         Quando eu fizer DELETE para "/api/Descartes/999999"&#xD;
-[xUnit.net 00:00:01.84]         -&gt; done: ApiSteps.WhenDelete("/api/Descartes/99...") (0,0s)&#xD;
-[xUnit.net 00:00:01.84]         Então o status da resposta deve ser 404&#xD;
-[xUnit.net 00:00:01.84]         -&gt; done: ApiSteps.ThenStatusShouldBe(404) (0,0s)&#xD;
+[HTTP] Content: {"type":"https://tools.ietf.org/html/rfc9110#section-15.5.5","title":"Not Found","status":404,"traceId":"00-91ee4714db274c6849f2575f3a69d4fc-b8a998e32ee83329-00"}&#xD;
+[xUnit.net 00:00:04.81]     Deletar um descarte inexistente retorna 404 [PASS]&#xD;
+[xUnit.net 00:00:04.81]       Output:&#xD;
+[xUnit.net 00:00:04.81]         Dado que a base URL da API é "&lt;BASE_URL&gt;"&#xD;
+[xUnit.net 00:00:04.81]         -&gt; done: ApiSteps.GivenBaseUrl("&lt;BASE_URL&gt;") (0,0s)&#xD;
+[xUnit.net 00:00:04.81]         Quando eu fizer DELETE para "/api/Descartes/999999"&#xD;
+[xUnit.net 00:00:04.81]         -&gt; done: ApiSteps.WhenDelete("/api/Descartes/99...") (0,2s)&#xD;
+[xUnit.net 00:00:04.81]         Então o status da resposta deve ser 404&#xD;
+[xUnit.net 00:00:04.81]         -&gt; done: ApiSteps.ThenStatusShouldBe(404) (0,0s)&#xD;
 [HTTP] Post http://localhost:5038/api/Descartes -&gt; 201 Created&#xD;
-[HTTP] Delete http://localhost:5038/api/Descartes/31 -&gt; 204 NoContent&#xD;
-[xUnit.net 00:00:01.90]     Deletar um descarte existente retorna 204 [PASS]&#xD;
-[xUnit.net 00:00:01.90]       Output:&#xD;
-[xUnit.net 00:00:01.90]         Dado que a base URL da API é "&lt;BASE_URL&gt;"&#xD;
-[xUnit.net 00:00:01.90]         -&gt; done: ApiSteps.GivenBaseUrl("&lt;BASE_URL&gt;") (0,0s)&#xD;
-[xUnit.net 00:00:01.90]         Dado que exista um descarte criado via POST em "/api/Descartes" com o corpo:&#xD;
-[xUnit.net 00:00:01.90]           --- multiline step argument ---&#xD;
-[xUnit.net 00:00:01.90]           { "bairro":"Bela Vista", "tipo":2, "quantidadeKg":0.7, "dataHora":"2025-10-10T22:09:47.709Z" }&#xD;
-[xUnit.net 00:00:01.90]         -&gt; done: ApiSteps.GivenThereIsACreatedItem("/api/Descartes", "{ "bairro":"Bela ...") (0,0s)&#xD;
-[xUnit.net 00:00:01.90]         Quando eu fizer DELETE para "/api/Descartes/{idCriado}"&#xD;
-[xUnit.net 00:00:01.90]         -&gt; done: ApiSteps.WhenDelete("/api/Descartes/{i...") (0,0s)&#xD;
-[xUnit.net 00:00:01.90]         Então o status da resposta deve ser 204&#xD;
-[xUnit.net 00:00:01.90]         -&gt; done: ApiSteps.ThenStatusShouldBe(204) (0,0s)&#xD;
-[xUnit.net 00:00:01.91]   Finished:    LixoZero.Specs&#xD;
+[HTTP] Delete http://localhost:5038/api/Descartes/34 -&gt; 204 NoContent&#xD;
+[xUnit.net 00:00:04.89]     Deletar um descarte existente retorna 204 [PASS]&#xD;
+[xUnit.net 00:00:04.89]       Output:&#xD;
+[xUnit.net 00:00:04.89]         Dado que a base URL da API é "&lt;BASE_URL&gt;"&#xD;
+[xUnit.net 00:00:04.89]         -&gt; done: ApiSteps.GivenBaseUrl("&lt;BASE_URL&gt;") (0,0s)&#xD;
+[xUnit.net 00:00:04.89]         Dado que exista um descarte criado via POST em "/api/Descartes" com o corpo:&#xD;
+[xUnit.net 00:00:04.89]           --- multiline step argument ---&#xD;
+[xUnit.net 00:00:04.89]           { "bairro":"Bela Vista", "tipo":2, "quantidadeKg":0.7, "dataHora":"2025-10-10T22:09:47.709Z" }&#xD;
+[xUnit.net 00:00:04.89]         -&gt; done: ApiSteps.GivenThereIsACreatedItem("/api/Descartes", "{ "bairro":"Bela ...") (0,0s)&#xD;
+[xUnit.net 00:00:04.89]         Quando eu fizer DELETE para "/api/Descartes/{idCriado}"&#xD;
+[xUnit.net 00:00:04.89]         -&gt; done: ApiSteps.WhenDelete("/api/Descartes/{i...") (0,1s)&#xD;
+[xUnit.net 00:00:04.89]         Então o status da resposta deve ser 204&#xD;
+[xUnit.net 00:00:04.89]         -&gt; done: ApiSteps.ThenStatusShouldBe(204) (0,0s)&#xD;
+[HTTP] Post http://localhost:5038/api/Descartes -&gt; 201 Created&#xD;
+[HTTP] Get http://localhost:5038/api/Descartes/35 -&gt; 200 OK&#xD;
+[xUnit.net 00:00:04.97]     Consultar por ID existente retorna 200 e contrato válido [PASS]&#xD;
+[xUnit.net 00:00:04.97]       Output:&#xD;
+[xUnit.net 00:00:04.97]         Dado que a base URL da API é "http://localhost:5038"&#xD;
+[xUnit.net 00:00:04.97]         -&gt; done: ApiSteps.GivenBaseUrl("http://localhost:...") (0,0s)&#xD;
+[xUnit.net 00:00:04.97]         Dado que exista um descarte criado via POST em "/api/Descartes" com o corpo:&#xD;
+[xUnit.net 00:00:04.97]           --- multiline step argument ---&#xD;
+[xUnit.net 00:00:04.97]           { "bairro":"Centro", "tipo":1, "quantidadeKg":1.5, "dataHora":"2025-10-10T22:09:47.709Z" }&#xD;
+[xUnit.net 00:00:04.97]         -&gt; done: ApiSteps.GivenThereIsACreatedItem("/api/Descartes", "{ "bairro":"Centr...") (0,0s)&#xD;
+[xUnit.net 00:00:04.97]         Quando eu fizer GET para "/api/Descartes/{idCriado}"&#xD;
+[xUnit.net 00:00:04.97]         -&gt; done: ApiSteps.WhenGet("/api/Descartes/{i...") (0,0s)&#xD;
+[xUnit.net 00:00:04.97]         Então o status da resposta deve ser 200&#xD;
+[xUnit.net 00:00:04.97]         -&gt; done: ApiSteps.ThenStatusShouldBe(200) (0,0s)&#xD;
+[xUnit.net 00:00:04.97]         E o corpo JSON deve obedecer ao schema "Schemas/descarte.schema.json"&#xD;
+[xUnit.net 00:00:04.97]         -&gt; done: ApiSteps.ThenBodyMatchesSchema("Schemas/descarte....") (0,0s)&#xD;
+[xUnit.net 00:00:04.97]         E o campo "tipo" deve ser 1&#xD;
+[xUnit.net 00:00:04.97]         -&gt; done: ApiSteps.ThenFieldNumberEquals("tipo", "1") (0,0s)&#xD;
+[xUnit.net 00:00:04.97]         E o campo "quantidadeKg" deve ser 1.5&#xD;
+[xUnit.net 00:00:04.97]         -&gt; done: ApiSteps.ThenFieldNumberEquals("quantidadeKg", "1.5") (0,0s)&#xD;
+[HTTP] Get http://localhost:5038/api/Descartes/999999 -&gt; 404 NotFound&#xD;
+[HTTP] Content: {"type":"https://tools.ietf.org/html/rfc9110#section-15.5.5","title":"Not Found","status":404,"traceId":"00-ee322bf95edc04b425adff5bc423df1e-0585bfe061b7e59f-00"}&#xD;
+[xUnit.net 00:00:05.01]     Consultar por ID inexistente retorna 404 [PASS]&#xD;
+[xUnit.net 00:00:05.01]       Output:&#xD;
+[xUnit.net 00:00:05.01]         Dado que a base URL da API é "http://localhost:5038"&#xD;
+[xUnit.net 00:00:05.01]         -&gt; done: ApiSteps.GivenBaseUrl("http://localhost:...") (0,0s)&#xD;
+[xUnit.net 00:00:05.01]         Quando eu fizer GET para "/api/Descartes/999999"&#xD;
+[xUnit.net 00:00:05.01]         -&gt; done: ApiSteps.WhenGet("/api/Descartes/99...") (0,0s)&#xD;
+[xUnit.net 00:00:05.01]         Então o status da resposta deve ser 404&#xD;
+[xUnit.net 00:00:05.01]         -&gt; done: ApiSteps.ThenStatusShouldBe(404) (0,0s)&#xD;
+[xUnit.net 00:00:05.02]   Finished:    LixoZero.Specs&#xD;
 </StdOut>
     </Output>
   </ResultSummary>
