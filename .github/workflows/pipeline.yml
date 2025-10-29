@@ -5,215 +5,183 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+  workflow_dispatch:
 
 permissions:
   contents: read
-  packages: write
 
 env:
-  REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
   BDD_BASE_URL: http://localhost:5038
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout do código
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Instalar .NET 8
-        uses: actions/setup-dotnet@v3
+      - uses: actions/setup-dotnet@v3
         with:
           dotnet-version: '8.0.x'
 
-      - name: Restaurar dependências
+      - name: Restore
         run: dotnet restore LixoZero.csproj
 
-      - name: Limpar diretórios temporários
+      - name: Clean
         run: dotnet clean
 
-      - name: Compilar o projeto
+      - name: Build
         run: dotnet build LixoZero.csproj --configuration Release --no-restore
 
-      # === TESTES UNIT (sem hashFiles: roda se existir *.csproj) ===
-      - name: Executar testes (unit se existir)
+      - name: Tests (se existir /tests)
         shell: bash
         run: |
           shopt -s nullglob
           files=(tests/*.csproj)
           if [ ${#files[@]} -gt 0 ]; then
-            dotnet test tests/*.csproj --configuration Release --logger "trx;LogFileName=unit.trx"
+            dotnet test tests/*.csproj -c Release --logger "trx;LogFileName=unit.trx"
           else
-            echo "Sem projeto de testes em /tests - pulando etapa de unit."
+            echo "Sem projeto de testes em /tests - pulando unit."
           fi
 
-      - name: Upload dos resultados de teste (TRX)
+      - name: Upload TRX
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: test-results
           path: "**/*.trx"
 
-      - name: Publicar aplicação
+      - name: Publish
         run: dotnet publish LixoZero.csproj -c Release -o ./out --no-build
 
-      - name: Upload da build (artefato)
+      - name: Upload build
         uses: actions/upload-artifact@v4
         with:
           name: LixoZero-Build
           path: ./out
 
-  # TESTES BDD / SPECS
   specs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout do código
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Instalar .NET 8
-        uses: actions/setup-dotnet@v3
+      - uses: actions/setup-dotnet@v3
         with:
           dotnet-version: '8.0.x'
 
-      - name: Subir API (docker compose)
+      - name: Subir API (Docker Compose)
+        shell: bash
         run: |
           docker compose up -d --build
-          for i in {1..30}; do
-            if curl -fsS "$BDD_BASE_URL/swagger/index.html" >/dev/null; then exit 0; fi
+          # espera até 60x (2min)
+          for i in {1..60}; do
+            if wget -S --spider "$BDD_BASE_URL/swagger/index.html" 2>&1 | grep -q "HTTP/1.1 200 OK"; then
+              echo "API OK (HTTP 200 no Swagger)"; exit 0; fi
             sleep 2
           done
-          echo "API não respondeu a tempo em $BDD_BASE_URL" >&2
-          docker compose logs
+          echo "API não respondeu 200 a tempo em $BDD_BASE_URL"
+          docker compose logs || true
           exit 1
 
-      - name: Executar testes (BDD/Specs)
+      - name: Rodar BDD (SpecFlow)
         run: dotnet test LixoZero.Specs/LixoZero.Specs.csproj -c Release --logger "trx;LogFileName=bdd.trx"
 
-      - name: Artefatos BDD (TRX + HTTP log)
+      - name: Upload BDD TRX
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: bdd-results
-          path: |
-            LixoZero.Specs/**/TestResults/**/*.trx
-            LixoZero.Specs/**/TestResults/bdd-http.log
+          path: LixoZero.Specs/**/TestResults/**/*.trx
 
       - name: Derrubar API
         if: always()
         run: docker compose down -v
 
-  # BUILD & PUSH DA IMAGEM
-  publish-image:
+  package-image:
     needs: [build, specs]
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout do código
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+      - name: Build Docker image
+        shell: bash
+        run: |
+          IMAGE="lixozero:${{ github.sha }}"
+          docker build -t "$IMAGE" -f Dockerfile .
+          docker save "$IMAGE" -o docker-image.tar
 
-      - name: Login no GHCR (runner)
-        uses: docker/login-action@v3
+      - name: Upload Docker image (artefato)
+        uses: actions/upload-artifact@v4
         with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          name: docker-image
+          path: docker-image.tar
 
-      - name: Metadados da imagem
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          tags: |
-            type=sha
-            type=raw,value=latest
-
-      - name: Build & Push
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          file: ./Dockerfile
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-
-  # DEPLOY STAGING (usa seus secrets STAGING_*)
-  deploy-staging:
-    needs: publish-image
+  deploy-staging-ci:
+    needs: package-image
     runs-on: ubuntu-latest
-    environment:
-      name: staging
-    env:
-      STAGING_HOST: ${{ secrets.STAGING_HOST }}
-      STAGING_USER: ${{ secrets.STAGING_USER }}
-      STAGING_SSH_KEY: ${{ secrets.STAGING_SSH_KEY }}
     steps:
-      - name: Pular se faltar secrets
-        if: ${{ env.STAGING_HOST == '' || env.STAGING_USER == '' || env.STAGING_SSH_KEY == '' }}
-        run: echo "Sem secrets de staging; pulando deploy."
-
-      - name: Deploy via SSH (docker pull/run)
-        if: ${{ env.STAGING_HOST != '' && env.STAGING_USER != '' && env.STAGING_SSH_KEY != '' }}
-        uses: appleboy/ssh-action@v0.1.10
+      - uses: actions/download-artifact@v4
         with:
-          host: ${{ secrets.STAGING_HOST }}
-          username: ${{ secrets.STAGING_USER }}
-          key: ${{ secrets.STAGING_SSH_KEY }}
-          # sem secrets de porta: assume 22
-          script: |
-            set -e
-            IMAGE="${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:sha-${{ github.sha }}"
-            # login ao GHCR no servidor usando o GITHUB_TOKEN do workflow
-            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ${{ env.REGISTRY }} -u "${{ github.actor }}" --password-stdin
-            docker pull "$IMAGE"
-            docker rm -f lixozero-api || true
-            mkdir -p /opt/lixozero/Data
-            touch /opt/lixozero/Data/lixoZero.db
-            docker run -d --name lixozero-api \
-              -p 5038:8080 \
-              -e ASPNETCORE_URLS=http://+:8080 \
-              -e ASPNETCORE_ENVIRONMENT=Staging \
-              -e ConnectionStrings__DefaultConnection="Data Source=/app/lixoZero.db" \
-              -v /opt/lixozero/Data/lixoZero.db:/app/lixoZero.db \
-              "$IMAGE"
+          name: docker-image
+          path: .
 
-  # DEPLOY PRODUÇÃO (usa seus secrets PROD_*)
-  deploy-prod:
-    needs: deploy-staging
+      - name: Carregar imagem e subir STAGING
+        shell: bash
+        run: |
+          docker load -i docker-image.tar
+          IMG=$(docker images --format '{{.Repository}}:{{.Tag}}' | grep '^lixozero:' | head -n1)
+
+          docker run -d --name lixozero-stg -p 5038:8080 \
+            -e ASPNETCORE_URLS=http://+:8080 \
+            -e ASPNETCORE_ENVIRONMENT=Staging \
+            -e ENABLE_SWAGGER=true \
+            -e DISABLE_HTTPS_REDIRECT=true \
+            "$IMG"
+
+          for i in {1..60}; do
+            if wget -S --spider http://localhost:5038/swagger/index.html 2>&1 | grep -q "HTTP/1.1 200 OK"; then
+              echo "STAGING OK (HTTP 200 no Swagger)"; exit 0; fi
+            sleep 2
+          done
+          echo "STAGING falhou: Swagger não respondeu 200 a tempo"
+          docker logs lixozero-stg || true
+          exit 1
+
+      - name: Encerrar STAGING
+        if: always()
+        run: docker rm -f lixozero-stg || true
+
+  deploy-prod-ci:
+    needs: deploy-staging-ci
     runs-on: ubuntu-latest
-    environment:
-      name: production
-    env:
-      PROD_HOST: ${{ secrets.PROD_HOST }}
-      PROD_USER: ${{ secrets.PROD_USER }}
-      PROD_SSH_KEY: ${{ secrets.PROD_SSH_KEY }}
     steps:
-      - name: Pular se faltar secrets
-        if: ${{ env.PROD_HOST == '' || env.PROD_USER == '' || env.PROD_SSH_KEY == '' }}
-        run: echo "Sem secrets de produção; pulando deploy."
-
-      - name: Deploy via SSH (docker pull/run)
-        if: ${{ env.PROD_HOST != '' && env.PROD_USER != '' && env.PROD_SSH_KEY != '' }}
-        uses: appleboy/ssh-action@v0.1.10
+      - uses: actions/download-artifact@v4
         with:
-          host: ${{ secrets.PROD_HOST }}
-          username: ${{ secrets.PROD_USER }}
-          key: ${{ secrets.PROD_SSH_KEY }}
-          script: |
-            set -e
-            IMAGE="${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:sha-${{ github.sha }}"
-            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ${{ env.REGISTRY }} -u "${{ github.actor }}" --password-stdin
-            docker pull "$IMAGE"
-            docker rm -f lixozero-api || true
-            mkdir -p /opt/lixozero/Data
-            touch /opt/lixozero/Data/lixoZero.db
-            docker run -d --name lixozero-api \
-              -p 80:8080 \
-              -e ASPNETCORE_URLS=http://+:8080 \
-              -e ASPNETCORE_ENVIRONMENT=Production \
-              -e ConnectionStrings__DefaultConnection="Data Source=/app/lixoZero.db" \
-              -v /opt/lixozero/Data/lixoZero.db:/app/lixoZero.db \
-              "$IMAGE"
+          name: docker-image
+          path: .
+
+      - name: Carregar imagem e subir PRODUÇÃO
+        shell: bash
+        run: |
+          docker load -i docker-image.tar
+          IMG=$(docker images --format '{{.Repository}}:{{.Tag}}' | grep '^lixozero:' | head -n1)
+
+          docker run -d --name lixozero-prd -p 5080:8080 \
+            -e ASPNETCORE_URLS=http://+:8080 \
+            -e ASPNETCORE_ENVIRONMENT=Production \
+            -e ENABLE_SWAGGER=true \
+            -e DISABLE_HTTPS_REDIRECT=true \
+            "$IMG"
+
+          for i in {1..60}; do
+            if wget -S --spider http://localhost:5080/swagger/index.html 2>&1 | grep -q "HTTP/1.1 200 OK"; then
+              echo "PRODUÇÃO OK (HTTP 200 no Swagger)"; exit 0; fi
+            sleep 2
+          done
+          echo "PRODUÇÃO falhou: Swagger não respondeu 200 a tempo"
+          docker logs lixozero-prd || true
+          exit 1
+
+      - name: Encerrar PRODUÇÃO
+        if: always()
+        run: docker rm -f lixozero-prd || true
