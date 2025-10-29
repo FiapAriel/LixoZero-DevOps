@@ -62,6 +62,9 @@ jobs:
   specs:
     needs: build
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ github.workspace }}
     steps:
       - uses: actions/checkout@v4
 
@@ -69,19 +72,43 @@ jobs:
         with:
           dotnet-version: '8.0.x'
 
-      - name: Subir API (Docker Compose)
-        shell: bash
+      - name: Versões (diag)
         run: |
-          docker compose up -d --build
-          # espera até 60x (2min)
+          docker version
+          docker compose version
+          ls -la
+          test -f docker-compose.yml && echo "compose encontrado" || (echo "ERRO: docker-compose.yml NAO encontrado na raiz"; exit 1)
+
+      - name: Validar Compose e Build
+        run: |
+          docker compose config
+          docker compose build --no-cache
+
+      - name: Subir API (Docker Compose)
+        run: |
+          docker compose up -d
+          echo "== docker compose ps =="
+          docker compose ps
+          echo "== aguardando Swagger 200 (até 120s) =="
+
+          # tenta o JSON primeiro (elimina cache do UI)
           for i in {1..60}; do
-            if wget -S --spider "$BDD_BASE_URL/swagger/index.html" 2>&1 | grep -q "HTTP/1.1 200 OK"; then
-              echo "API OK (HTTP 200 no Swagger)"; exit 0; fi
+            CODE=$(curl -fsS -o /dev/null -w "%{http_code}" http://localhost:5038/swagger/v1/swagger.json || true)
+            if [ "$CODE" = "200" ]; then
+              echo "API OK (200 em /swagger/v1/swagger.json)"; break; fi
             sleep 2
           done
-          echo "API não respondeu 200 a tempo em $BDD_BASE_URL"
-          docker compose logs || true
-          exit 1
+
+          if [ "$CODE" != "200" ]; then
+            echo "Falhou JSON: status=$CODE"
+            echo "== docker compose logs (api) =="
+            docker compose logs api || true
+            exit 1
+          fi
+
+          # opcional: confere a UI também
+          CODE_UI=$(curl -fsS -o /dev/null -w "%{http_code}" http://localhost:5038/swagger/index.html || true)
+          echo "Swagger UI status: $CODE_UI"
 
       - name: Rodar BDD (SpecFlow)
         run: dotnet test LixoZero.Specs/LixoZero.Specs.csproj -c Release --logger "trx;LogFileName=bdd.trx"
@@ -97,6 +124,7 @@ jobs:
         if: always()
         run: docker compose down -v
 
+
   package-image:
     needs: [build, specs]
     runs-on: ubuntu-latest
@@ -104,7 +132,6 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Build Docker image
-        shell: bash
         run: |
           IMAGE="lixozero:${{ github.sha }}"
           docker build -t "$IMAGE" -f Dockerfile .
@@ -126,19 +153,19 @@ jobs:
           path: .
 
       - name: Carregar imagem e subir STAGING
-        shell: bash
         run: |
           docker load -i docker-image.tar
-          IMG=$(docker images --format '{{.Repository}}:{{.Tag}}' | grep '^lixozero:' | head -n1)
+          IMG=$(docker images --format '{{.Repository}}:{{.Tag}}' | grep lixozero | head -n1)
 
           docker run -d --name lixozero-stg -p 5038:8080 \
-            -e ASPNETCORE_URLS=http://+:8080 \
-            -e ASPNETCORE_ENVIRONMENT=Staging \
-            -e ENABLE_SWAGGER=true \
-            -e DISABLE_HTTPS_REDIRECT=true \
-            "$IMG"
+          -e ASPNETCORE_URLS=http://+:8080 \
+          -e ASPNETCORE_ENVIRONMENT=Staging \
+          -e ENABLE_SWAGGER=true \
+          -e DISABLE_HTTPS_REDIRECT=true \
+          "$IMG"
 
-          for i in {1..60}; do
+
+          for i in {1..30}; do
             if wget -S --spider http://localhost:5038/swagger/index.html 2>&1 | grep -q "HTTP/1.1 200 OK"; then
               echo "STAGING OK (HTTP 200 no Swagger)"; exit 0; fi
             sleep 2
@@ -161,19 +188,19 @@ jobs:
           path: .
 
       - name: Carregar imagem e subir PRODUÇÃO
-        shell: bash
         run: |
           docker load -i docker-image.tar
-          IMG=$(docker images --format '{{.Repository}}:{{.Tag}}' | grep '^lixozero:' | head -n1)
+          IMG=$(docker images --format '{{.Repository}}:{{.Tag}}' | grep lixozero | head -n1)
 
           docker run -d --name lixozero-prd -p 5080:8080 \
-            -e ASPNETCORE_URLS=http://+:8080 \
-            -e ASPNETCORE_ENVIRONMENT=Production \
-            -e ENABLE_SWAGGER=true \
-            -e DISABLE_HTTPS_REDIRECT=true \
-            "$IMG"
+          -e ASPNETCORE_URLS=http://+:8080 \
+          -e ASPNETCORE_ENVIRONMENT=Production \
+          -e ENABLE_SWAGGER=true \
+          -e DISABLE_HTTPS_REDIRECT=true \
+          "$IMG"
 
-          for i in {1..60}; do
+
+          for i in {1..30}; do
             if wget -S --spider http://localhost:5080/swagger/index.html 2>&1 | grep -q "HTTP/1.1 200 OK"; then
               echo "PRODUÇÃO OK (HTTP 200 no Swagger)"; exit 0; fi
             sleep 2
