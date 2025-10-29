@@ -27,7 +27,7 @@ builder.Services.AddSwaggerGen(c =>
 
 var app = builder.Build();
 
-// 3) DB: migra (fallback EnsureCreated para não quebrar)
+// 3) DB: migra (fallback EnsureCreated)
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
@@ -50,20 +50,19 @@ if (enableSwagger)
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-
-    // MUITO IMPORTANTE: o pipeline usa HEAD (wget --spider).
-    // Garante 200 também para HEAD em /swagger/index.html
-    app.MapMethods("/swagger/index.html", new[] { "HEAD" }, () => Results.Ok());
 }
-else
+
+// 🔧 PONTO CRÍTICO DO SEU HEALTHCHECK:
+// Sempre responda 200 a HEAD em /swagger/index.html (é exatamente o que o wget --spider faz)
+app.MapMethods("/swagger/index.html", new[] { "HEAD" }, () => Results.Ok());
+
+// Se, por algum motivo, a UI não estiver ativa, ainda assim devolvemos 200 a GET para não quebrar o check
+if (!enableSwagger)
 {
-    // Fallback quando o Swagger estiver OFF: garante 200 no mesmo caminho do healthcheck
-    var methods = new[] { "GET", "HEAD" };
-    app.MapMethods("/swagger/index.html", methods,
-        () => Results.Text("Swagger desabilitado neste ambiente.", "text/plain"));
+    app.MapGet("/swagger/index.html", () => Results.Text("Swagger desabilitado neste ambiente.", "text/plain"));
 }
 
-// 5) HTTPS redirect: só se houver binding HTTPS (evita 307 no healthcheck)
+// 5) HTTPS redirect: só se houver binding HTTPS (evita 307 quando só tem HTTP)
 var disableHttps = Environment.GetEnvironmentVariable("DISABLE_HTTPS_REDIRECT");
 var urls = Environment.GetEnvironmentVariable("ASPNETCORE_URLS")
            ?? Environment.GetEnvironmentVariable("URLS")
