@@ -124,7 +124,6 @@ jobs:
         if: always()
         run: docker compose down -v
 
-
   package-image:
     needs: [build, specs]
     runs-on: ubuntu-latest
