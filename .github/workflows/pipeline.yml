@@ -152,26 +152,35 @@ jobs:
           name: docker-image
           path: .
 
-      - name: Carregar imagem e subir STAGING
+      - name: Subir STAGING (limpa container, sobe e checa swagger.json)
         run: |
+          # limpa container anterior (se existir)
+          docker rm -f lixozero-stg || true
+
           docker load -i docker-image.tar
           IMG=$(docker images --format '{{.Repository}}:{{.Tag}}' | grep lixozero | head -n1)
 
           docker run -d --name lixozero-stg -p 5038:8080 \
-          -e ASPNETCORE_URLS=http://+:8080 \
-          -e ASPNETCORE_ENVIRONMENT=Staging \
-          -e ENABLE_SWAGGER=true \
-          -e DISABLE_HTTPS_REDIRECT=true \
-          "$IMG"
+            -e ASPNETCORE_URLS=http://+:8080 \
+            -e ASPNETCORE_ENVIRONMENT=Staging \
+            -e ENABLE_SWAGGER=true \
+            -e DISABLE_HTTPS_REDIRECT=true \
+            "$IMG"
 
-
-          for i in {1..30}; do
-            if wget -S --spider http://localhost:5038/swagger/index.html 2>&1 | grep -q "HTTP/1.1 200 OK"; then
-              echo "STAGING OK (HTTP 200 no Swagger)"; exit 0; fi
+          echo "== aguardando 200 em /swagger/v1/swagger.json (até 120s) =="
+          for i in {1..60}; do
+            CODE=$(curl -fsS -o /dev/null -w "%{http_code}" http://localhost:5038/swagger/v1/swagger.json || true)
+            echo "tentativa $i: $CODE"
+            if [ "$CODE" = "200" ]; then
+              echo "STAGING OK (200 em swagger.json)"; exit 0; fi
             sleep 2
           done
-          echo "STAGING falhou: Swagger não respondeu 200 a tempo"
+
+          echo "STAGING falhou: swagger.json não respondeu 200 a tempo"
+          echo "== docker logs (stg) =="
           docker logs lixozero-stg || true
+          echo "== headers da UI (index.html) =="
+          curl -ILs http://localhost:5038/swagger/index.html || true
           exit 1
 
       - name: Encerrar STAGING
@@ -187,26 +196,35 @@ jobs:
           name: docker-image
           path: .
 
-      - name: Carregar imagem e subir PRODUÇÃO
+      - name: Subir PRODUÇÃO (limpa container, sobe e checa swagger.json)
         run: |
+          # limpa container anterior (se existir)
+          docker rm -f lixozero-prd || true
+
           docker load -i docker-image.tar
           IMG=$(docker images --format '{{.Repository}}:{{.Tag}}' | grep lixozero | head -n1)
 
           docker run -d --name lixozero-prd -p 5080:8080 \
-          -e ASPNETCORE_URLS=http://+:8080 \
-          -e ASPNETCORE_ENVIRONMENT=Production \
-          -e ENABLE_SWAGGER=true \
-          -e DISABLE_HTTPS_REDIRECT=true \
-          "$IMG"
+            -e ASPNETCORE_URLS=http://+:8080 \
+            -e ASPNETCORE_ENVIRONMENT=Production \
+            -e ENABLE_SWAGGER=true \
+            -e DISABLE_HTTPS_REDIRECT=true \
+            "$IMG"
 
-
-          for i in {1..30}; do
-            if wget -S --spider http://localhost:5080/swagger/index.html 2>&1 | grep -q "HTTP/1.1 200 OK"; then
-              echo "PRODUÇÃO OK (HTTP 200 no Swagger)"; exit 0; fi
+          echo "== aguardando 200 em /swagger/v1/swagger.json (até 120s) =="
+          for i in {1..60}; do
+            CODE=$(curl -fsS -o /dev/null -w "%{http_code}" http://localhost:5080/swagger/v1/swagger.json || true)
+            echo "tentativa $i: $CODE"
+            if [ "$CODE" = "200" ]; then
+              echo "PRODUÇÃO OK (200 em swagger.json)"; exit 0; fi
             sleep 2
           done
-          echo "PRODUÇÃO falhou: Swagger não respondeu 200 a tempo"
+
+          echo "PRODUÇÃO falhou: swagger.json não respondeu 200 a tempo"
+          echo "== docker logs (prd) =="
           docker logs lixozero-prd || true
+          echo "== headers da UI (index.html) =="
+          curl -ILs http://localhost:5080/swagger/index.html || true
           exit 1
 
       - name: Encerrar PRODUÇÃO
