@@ -42,7 +42,7 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
-// 4) Swagger: on em Development e Staging; também aceita ENABLE_SWAGGER=true
+// 4) Swagger: ON em Development e Staging; também aceita ENABLE_SWAGGER=true
 var enableSwaggerEnv = Environment.GetEnvironmentVariable("ENABLE_SWAGGER");
 var enableSwagger =
     app.Environment.IsDevelopment() ||
@@ -56,15 +56,21 @@ if (enableSwagger)
 }
 else
 {
-    // Fallback apenas quando Swagger estiver OFF:
-    // Garante HTTP/1.1 200 para GET e HEAD em /swagger/index.html
+    // Fallback quando Swagger estiver OFF: garante 200 para o healthcheck
     var methods = new[] { "GET", "HEAD" };
     app.MapMethods("/swagger/index.html", methods, () => Results.Text("Swagger desabilitado neste ambiente.", "text/plain"));
 }
 
-// 5) HTTPS redirect: só ativa se NÃO estiver desabilitado por env
+// 5) HTTPS redirect somente se HÁ HTTPS configurado (evita 307 em http://localhost:5038)
 var disableHttps = Environment.GetEnvironmentVariable("DISABLE_HTTPS_REDIRECT");
-if (!string.Equals(disableHttps, "true", StringComparison.OrdinalIgnoreCase))
+var urls = Environment.GetEnvironmentVariable("ASPNETCORE_URLS")
+           ?? Environment.GetEnvironmentVariable("URLS")
+           ?? string.Empty;
+var httpsPorts = Environment.GetEnvironmentVariable("HTTPS_PORTS") ?? string.Empty;
+bool hasHttpsBinding = urls.Contains("https://", StringComparison.OrdinalIgnoreCase)
+                       || !string.IsNullOrWhiteSpace(httpsPorts);
+
+if (!string.Equals(disableHttps, "true", StringComparison.OrdinalIgnoreCase) && hasHttpsBinding)
 {
     app.UseHttpsRedirection();
 }
