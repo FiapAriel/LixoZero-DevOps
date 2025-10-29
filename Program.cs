@@ -10,7 +10,7 @@ var cs = Environment.GetEnvironmentVariable("ConnectionStrings__DefaultConnectio
          ?? builder.Configuration.GetConnectionString("DefaultConnection")
          ?? "Data Source=lixoZero.db";
 
-// 2) DI padrão
+// 2) DI
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlite(cs));
 builder.Services.AddScoped<DescarteService>();
 builder.Services.AddControllers();
@@ -27,7 +27,7 @@ builder.Services.AddSwaggerGen(c =>
 
 var app = builder.Build();
 
-// 3) Garantir base (aplica Migrate; se falhar, EnsureCreated para evitar 500 por 'no such table/unable to open')
+// 3) DB: aplica migrações (fallback EnsureCreated para não quebrar em runtime)
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
@@ -42,19 +42,27 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
-// 4) Pipeline / Swagger
-// Habilita Swagger se em Development OU se ENABLE_SWAGGER=true (controlado pelo pipeline)
+// 4) Swagger: on em Development e Staging; também aceita ENABLE_SWAGGER=true
 var enableSwaggerEnv = Environment.GetEnvironmentVariable("ENABLE_SWAGGER");
-var enableSwagger = app.Environment.IsDevelopment() ||
-                    string.Equals(enableSwaggerEnv, "true", StringComparison.OrdinalIgnoreCase);
+var enableSwagger =
+    app.Environment.IsDevelopment() ||
+    app.Environment.IsStaging() ||
+    string.Equals(enableSwaggerEnv, "true", StringComparison.OrdinalIgnoreCase);
 
 if (enableSwagger)
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+else
+{
+    // Fallback apenas quando Swagger estiver OFF:
+    // Garante HTTP/1.1 200 para GET e HEAD em /swagger/index.html
+    var methods = new[] { "GET", "HEAD" };
+    app.MapMethods("/swagger/index.html", methods, () => Results.Text("Swagger desabilitado neste ambiente.", "text/plain"));
+}
 
-// 5) HTTPS redirect: só ativa se NÃO estiver desabilitado
+// 5) HTTPS redirect: só ativa se NÃO estiver desabilitado por env
 var disableHttps = Environment.GetEnvironmentVariable("DISABLE_HTTPS_REDIRECT");
 if (!string.Equals(disableHttps, "true", StringComparison.OrdinalIgnoreCase))
 {
