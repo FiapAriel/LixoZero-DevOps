@@ -27,14 +27,11 @@ builder.Services.AddSwaggerGen(c =>
 
 var app = builder.Build();
 
-// 3) DB: aplica migrações (fallback EnsureCreated para não quebrar em runtime)
+// 3) DB: migra (fallback EnsureCreated para não quebrar)
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    try
-    {
-        db.Database.Migrate();
-    }
+    try { db.Database.Migrate(); }
     catch (Exception ex)
     {
         Console.WriteLine($"[DB] Migrate falhou: {ex.Message}. Tentando EnsureCreated()...");
@@ -53,15 +50,20 @@ if (enableSwagger)
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+
+    // MUITO IMPORTANTE: o pipeline usa HEAD (wget --spider).
+    // Garante 200 também para HEAD em /swagger/index.html
+    app.MapMethods("/swagger/index.html", new[] { "HEAD" }, () => Results.Ok());
 }
 else
 {
-    // Fallback quando Swagger estiver OFF: garante 200 para o healthcheck
+    // Fallback quando o Swagger estiver OFF: garante 200 no mesmo caminho do healthcheck
     var methods = new[] { "GET", "HEAD" };
-    app.MapMethods("/swagger/index.html", methods, () => Results.Text("Swagger desabilitado neste ambiente.", "text/plain"));
+    app.MapMethods("/swagger/index.html", methods,
+        () => Results.Text("Swagger desabilitado neste ambiente.", "text/plain"));
 }
 
-// 5) HTTPS redirect somente se HÁ HTTPS configurado (evita 307 em http://localhost:5038)
+// 5) HTTPS redirect: só se houver binding HTTPS (evita 307 no healthcheck)
 var disableHttps = Environment.GetEnvironmentVariable("DISABLE_HTTPS_REDIRECT");
 var urls = Environment.GetEnvironmentVariable("ASPNETCORE_URLS")
            ?? Environment.GetEnvironmentVariable("URLS")
